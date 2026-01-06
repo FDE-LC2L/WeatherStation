@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace AppCommon.Helpers
 {
@@ -39,7 +36,8 @@ namespace AppCommon.Helpers
             var fraction = scaledValue - index;
 
             // Handle edge case
-            if (index >= colors.Length - 1) { 
+            if (index >= colors.Length - 1)
+            {
                 return colors[^1];
             }
 

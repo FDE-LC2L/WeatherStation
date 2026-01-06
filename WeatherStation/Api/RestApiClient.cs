@@ -9,7 +9,7 @@ namespace WeatherStation.Api
         //const string InfoClimatApiUrlTst = $"http://www.infoclimat.fr/public-api/gfs/json?_ll=43.863485,-0.702268&_auth={InfoClimatApiKey}";
 
 
-        const string InfoClimatApiKey = "AhgHEFYoBiRVeFNkBHIHLgRsATQPeVN0US1RMl86An8FbgJjB2dVM1U7USxXeAA2UH1XNFxnUGAAa1UtDH5TMgJoB2tWPQZhVTpTNgQrBywEKgFgDy9TdFEzUT5fNwJ%2FBWcCbgdhVSlVMlEtV2YAMlBnVyhcfFBpAGRVNgxkUzQCYgdjVjQGZFU7Uy4EKwc1BD8BYQ85U2lRNFEzXzcCMgVvAmcHbFUwVT9RLVdlADNQalc1XGFQaQBrVTcMflMvAhgHEFYoBiRVeFNkBHIHLgRiAT8PZA%3D%3D&_c=cb6a40c35f2808f273a58f02d80958ad";        
+        const string InfoClimatApiKey = "AhgHEFYoBiRVeFNkBHIHLgRsATQPeVN0US1RMl86An8FbgJjB2dVM1U7USxXeAA2UH1XNFxnUGAAa1UtDH5TMgJoB2tWPQZhVTpTNgQrBywEKgFgDy9TdFEzUT5fNwJ%2FBWcCbgdhVSlVMlEtV2YAMlBnVyhcfFBpAGRVNgxkUzQCYgdjVjQGZFU7Uy4EKwc1BD8BYQ85U2lRNFEzXzcCMgVvAmcHbFUwVT9RLVdlADNQalc1XGFQaQBrVTcMflMvAhgHEFYoBiRVeFNkBHIHLgRiAT8PZA%3D%3D&_c=cb6a40c35f2808f273a58f02d80958ad";
         const string InfoClimatApiUrl = "http://www.infoclimat.fr/public-api/gfs/json?_ll={0},{1}&_auth=" + InfoClimatApiKey;
 
         const string GeoApiCommunes = "https://geo.api.gouv.fr/communes";
@@ -50,7 +50,7 @@ namespace WeatherStation.Api
         public async Task<string> GetInfoClimatWheatherDataAsync(double latitude, double longitude)
         {
             var url = string.Format(InfoClimatApiUrl, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture));
-           // url = InfoClimatApiUrlTst;
+            // url = InfoClimatApiUrlTst;
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();

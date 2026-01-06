@@ -7,7 +7,6 @@ using WeatherStation.Geo;
 using WeatherStation.Infrastructure;
 using WeatherStation.WeatherData.InfoClimat;
 using WeatherStation.Windows;
-using Windows.ApplicationModel.Background;
 
 namespace WeatherStation
 {
@@ -32,7 +31,7 @@ namespace WeatherStation
         /// Event handlers are attached to each timer's Tick event to trigger periodic updates.
         /// </summary>
         public MainWindow()
-        {            
+        {
             InitializeComponent();
             // Create and configure the forecast timer with the interval until the next forecast update slot
             _timerForecast = new DispatcherTimer
@@ -44,7 +43,7 @@ namespace WeatherStation
             _timerClock = new DispatcherTimer
             {
                 Interval = GetDelayToNextSlot(1)
-            };            
+            };
             _timerClock.Tick += TimerClock_Tick;
         }
 

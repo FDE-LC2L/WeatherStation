@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using WeatherStation.Api;
@@ -21,7 +20,7 @@ namespace WeatherStation.Windows
             InitializeComponent();
             TextBlockWindowTitle.Text = AppResx.AppParameters.ToUpperInvariant();
             TextBoxPostalCode.Text = AppParameters.Settings.LastUsedPostalCode;
-            CurrentCity = currentCity;   
+            CurrentCity = currentCity;
             SetComponents();
         }
         #endregion
@@ -64,14 +63,14 @@ namespace WeatherStation.Windows
                 }
                 else if (cities.Count == 1)
                 {
-                    CurrentCity = cities[0];                    
+                    CurrentCity = cities[0];
                 }
                 else
                 {
                     var citiesWindow = new CitiesWindow(this, cities);
                     if (citiesWindow.ShowDialog() == true)
                     {
-                        CurrentCity = citiesWindow.SelectedCity;                        
+                        CurrentCity = citiesWindow.SelectedCity;
                     }
                 }
                 SetComponents();
@@ -86,7 +85,7 @@ namespace WeatherStation.Windows
         }
 
         private void ImageButtonOk_Click(object sender, RoutedEventArgs e)
-        {  
+        {
             DialogResult = true;
             Close();
         }

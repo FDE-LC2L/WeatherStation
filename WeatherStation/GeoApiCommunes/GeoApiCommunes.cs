@@ -40,6 +40,6 @@ namespace WeatherStation.Geo
 
         [JsonIgnore]
         public string FormattedName { get => $"{Name} {PostalCodes[0]}"; }
-        
+
     }
 }

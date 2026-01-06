@@ -91,7 +91,7 @@ namespace WeatherStation.Infrastructure
         {
             if (!_FirstInit)
             {
-             //   WindowHelper.RestorePosition(this);
+                //   WindowHelper.RestorePosition(this);
                 FirstInit();
                 StartDelayedFirstInitTimer();
                 SetComponents();
@@ -101,7 +101,7 @@ namespace WeatherStation.Infrastructure
 
         private void CustomWindow_Closed(object? sender, System.EventArgs e)
         {
-           // WindowHelper.SavePosition(this);
+            // WindowHelper.SavePosition(this);
         }
     }
 }
