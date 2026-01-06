@@ -79,7 +79,7 @@
             FontSize="20"
             FontWeight="Bold">
             <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0:0.0}° - {1:0.0}°">
+                <MultiBinding StringFormat="{}{0:0.0}° à {1:0.0}°">
                     <Binding ElementName="ThisFutureWeatherCard" Path="MinTemp" />
                     <Binding ElementName="ThisFutureWeatherCard" Path="MaxTemp" />
                 </MultiBinding>

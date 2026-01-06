@@ -17,7 +17,9 @@ namespace AppCommon.Helpers
         /// </returns>
         public static Color GetColorMultipoint(double temperature, double minTemp, double maxTemp)
         {
-            var normalized = Math.Clamp((temperature - minTemp) / (maxTemp - minTemp), 0.0, 1.0);
+            // Normalize the temperature within the specified range.
+            // The null check above ensures 'temperature' is not null here, so direct conversion is safe.
+            var normalized = Math.Clamp(((double)temperature - minTemp) / (maxTemp - minTemp), 0.0, 1.0);
 
             // Define key colors
             Color[] colors =

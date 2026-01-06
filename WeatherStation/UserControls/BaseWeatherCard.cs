@@ -218,8 +218,12 @@ namespace WeatherStation.UserControls
         }
 
 
-
-
+        /// <summary>
+        /// Dependency property for the <see cref="RainImageSrc"/> property.
+        /// Represents the image source for the rain condition icon displayed in the weather card.
+        /// This property is used internally to bind the rain icon to the control.
+        /// The image is typically selected based on the rain intensity and retrieved from application resources.
+        /// </summary>
         protected static readonly DependencyProperty RainImageSrcProperty = DependencyProperty.Register(
             "RainImageSrc",
             typeof(ImageSource),
@@ -227,6 +231,11 @@ namespace WeatherStation.UserControls
             new FrameworkPropertyMetadata(null));
 
 
+        /// <summary>
+        /// Gets or sets the image source for the rain condition icon.
+        /// This property is a dependency property used internally to bind the rain icon to the control.
+        /// The image is typically selected based on the rain intensity and retrieved from application resources.
+        /// </summary>
         protected ImageSource RainImageSrc
         {
             get { return (ImageSource)GetValue(RainImageSrcProperty); }

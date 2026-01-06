@@ -105,7 +105,46 @@ namespace WeatherStation.WeatherData.InfoClimat
         {
             var hourString = ((int)hour).ToString("00") + ":00:00";
             var dateString = date.ToString("yyyy-MM-dd ") + hourString;
-            return GetForecast(dateString);
+            var v = GetForecast(dateString);
+            return v;
+        }
+
+        /// <summary>
+        /// Retrieves all weather forecasts available for a specific day.
+        /// </summary>
+        /// <param name="date">
+        /// The <see cref="DateOnly"/> representing the day for which forecasts are requested.
+        /// </param>
+        /// <returns>
+        /// A dictionary mapping date-time strings (formatted as "yyyy-MM-dd HH:mm:ss") to <see cref="ForecastData"/> objects for the specified day,
+        /// or <c>null</c> if no forecasts are available.
+        /// </returns>
+        public List<ForecastData?>? GetForecastsForDay(DateOnly date)
+        {
+            var forecasts = _weatherResponse?.Forecasts?.Where(f => f.Key.StartsWith(date.ToString("yyyy-MM-dd")));
+            if (forecasts?.Count() > 0)
+            {
+                foreach (var f in forecasts)
+                {
+                    f.Value.DateString = f.Key;
+                }
+            }
+            //return _weatherResponse?.Forecasts?.Where(f => f.Key.StartsWith(date.ToString("yyyy-MM-dd"))).ToDictionary(f => f.Key, f => f.Value);             
+            return forecasts?.Select(f => f.Value).ToList<ForecastData?>();
+        }
+
+        /// <summary>
+        /// Returns the number of weather forecasts available for a given day.
+        /// </summary>
+        /// <param name="date">
+        /// The <see cref="DateOnly"/> representing the day for which the forecast count is requested.
+        /// </param>
+        /// <returns>
+        /// The number of forecasts available for the specified day, or 0 if no forecasts are present.
+        /// </returns>
+        public int GetCountForecastForDay(DateOnly date)
+        {
+            return _weatherResponse?.Forecasts?.Count(f => f.Key.StartsWith(date.ToString("yyyy-MM-dd"))) ?? 0;
         }
     }
 
@@ -214,6 +253,9 @@ namespace WeatherStation.WeatherData.InfoClimat
 
         [JsonPropertyName("nebulosite")]
         public Cloudiness? Cloudiness { get; set; }
+
+        [JsonIgnore]
+        public string DateString { get; set; } = string.Empty;
     }
 
     public class Temperature

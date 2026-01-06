@@ -11,40 +11,40 @@
 
 
     <LinearGradientBrush x:Key="BrushCommonLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
-        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayGradient1}" />
-        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayGradient2}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayGradient1}" />
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayGradientGreen1}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayGradientGreen2}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayGradientGreen1}" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="BrushLightLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
-        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradient1}" />
-        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient2}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient1}" />
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradientGreen1}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradientGreen2}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradientGreen1}" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="BrushSensorZoneLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
-        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradient2}" />
-        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient1}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient2}" />
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradientGreen2}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradientGreen1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradientGreen2}" />
     </LinearGradientBrush>
 
 
 
     <LinearGradientBrush x:Key="BrushFutureWeatherCardLinearGradient" StartPoint="0.1,0" EndPoint="0.5,1">
-        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient2}" />
-        <GradientStop Offset="0.1" Color="{StaticResource clrMainDisplayLightGradient1}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient2}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradientGreen2}" />
+        <GradientStop Offset="0.1" Color="{StaticResource clrMainDisplayLightGradientGreen1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradientGreen2}" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="BrushProductButtonLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
-        <GradientStop Offset="0.20" Color="{StaticResource clrProductButtonGradient2}" />
-        <GradientStop Offset="0.5" Color="{StaticResource clrProductButtonGradient1}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrProductButtonGradient2}" />
+        <GradientStop Offset="0.20" Color="{StaticResource clrProductButtonGradientGreen2}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrProductButtonGradientGreen1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrProductButtonGradientGreen2}" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="BrushDialogLinearGradient" StartPoint="0,0" EndPoint="1.5,0">
-        <GradientStop Offset="0.2" Color="{StaticResource clrWindowAuthenticationGradient1}" />
-        <GradientStop Offset="0.8" Color="{StaticResource clrWindowAuthenticationGradient2}" />
+        <GradientStop Offset="0.2" Color="{StaticResource clrWindowAuthenticationGradientGreen1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrWindowAuthenticationGradientGreen2}" />
     </LinearGradientBrush>
 
 

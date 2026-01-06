@@ -9,9 +9,7 @@
     <SolidColorBrush x:Key="clrListViewSecondaryAlternateColor">#C3FFC8</SolidColorBrush>
     <SolidColorBrush x:Key="clrListViewSelectedColor">#81FEF6</SolidColorBrush>
     <SolidColorBrush x:Key="clrDefaultText">#0000C0</SolidColorBrush>
-    <SolidColorBrush x:Key="clrAlertText">#FF0000</SolidColorBrush>
-    <SolidColorBrush x:Key="clrArticleCode">#A52A2A</SolidColorBrush>
-    <SolidColorBrush x:Key="clrTiersCode">#0000FF</SolidColorBrush>
+
     <SolidColorBrush x:Key="clrReadOnlyColor">#FFFFFFCC</SolidColorBrush>
     <SolidColorBrush x:Key="clrForegroundNormalPrice">#0000FF</SolidColorBrush>
     <SolidColorBrush x:Key="clrForegroundForcedPrice">#FF0000</SolidColorBrush>
@@ -19,7 +17,6 @@
     <SolidColorBrush x:Key="clrForegroundInternalInformation">#209101</SolidColorBrush>
     <SolidColorBrush x:Key="clrMandatoryZone">Red</SolidColorBrush>
     <SolidColorBrush x:Key="clrBackgroundOk">#6015FF00</SolidColorBrush>
-    <SolidColorBrush x:Key="clrPriceColumn">#0000FF</SolidColorBrush>
     <SolidColorBrush x:Key="clrProgressbarForegroung">#FF00BF00</SolidColorBrush>
 
     <SolidColorBrush x:Key="clrTitleLibelleBackground">Beige</SolidColorBrush>
@@ -27,10 +24,9 @@
     <SolidColorBrush x:Key="clrDefaultBorderZone">Black</SolidColorBrush>
     <SolidColorBrush x:Key="clrHyperlinkText">Blue</SolidColorBrush>
     <SolidColorBrush x:Key="clrWindowAuthenticationBorderColor">Blue</SolidColorBrush>
-    <SolidColorBrush x:Key="clrTicketViewBorderColor">Blue</SolidColorBrush>
 
-    <SolidColorBrush x:Key="clrButtonVenteComptoirBorderBrush">#697AFF</SolidColorBrush>
-    <SolidColorBrush x:Key="clrButtonVenteComptoirBackground">#FFCFE5FE</SolidColorBrush>
+
+
 
     <SolidColorBrush x:Key="clrProductButtonBorderColor">Blue</SolidColorBrush>
 
@@ -55,4 +51,17 @@
 
     <Color x:Key="clrProductButtonGradient1">#EEBDCCFF</Color>
     <Color x:Key="clrProductButtonGradient2">#EE8796FB</Color>
+
+
+    <Color x:Key="clrMainDisplayGradientGreen1">#EE8DFF8D</Color>
+    <Color x:Key="clrMainDisplayGradientGreen2">#5557FB66</Color>
+
+    <Color x:Key="clrWindowAuthenticationGradientGreen1">#5557FB66</Color>
+    <Color x:Key="clrWindowAuthenticationGradientGreen2">White</Color>
+
+    <Color x:Key="clrMainDisplayLightGradientGreen1">#EE8DFF8D</Color>
+    <Color x:Key="clrMainDisplayLightGradientGreen2">#7757FB66</Color>
+
+    <Color x:Key="clrProductButtonGradientGreen1">#EE8DFF8D</Color>
+    <Color x:Key="clrProductButtonGradientGreen2">#7757FB66</Color>
 </ResourceDictionary>

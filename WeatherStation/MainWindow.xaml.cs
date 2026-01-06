@@ -1,4 +1,5 @@
 ﻿using AppCommon.Helpers;
+using System;
 using System.Net;
 using System.Runtime.Versioning;
 using System.Windows.Threading;
@@ -63,6 +64,8 @@ namespace WeatherStation
                     SensorDisplayMain.SensorDataList.UpdateSensor(data);
                 });
             };
+            TemperatureBarCurrentDay.MinTemp = -5;
+            TemperatureBarCurrentDay.MaxTemp = 30;
         }
 
         protected override void DelayedFirstInit()
@@ -76,7 +79,7 @@ namespace WeatherStation
 
 
 
-            TemperatureBarCurrentDay.Values = new double[] { 12, 14, 15, 16, 18, 20, 21, 20, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            TemperatureBarCurrentDay.Values = [-5, 30, -5, 30, -5, 30, -5, 30];
         }
 
         protected override void SetComponents()
@@ -183,17 +186,12 @@ namespace WeatherStation
         private async Task UpdateForecast(City? city)
         {
             if (city is null) { return; }
+            var dayForecastCount = 0;
             var infoClimatManager = new InfoClimatManager(city);
             await infoClimatManager.LoadInfoClimatData();
-            CurrentWeatherCard.InfoClimat = infoClimatManager;
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
-            CurrentWeatherCard.UpdateCard();
-
-            FutureWeatherCardDay1.InfoClimat = infoClimatManager;
-            FutureWeatherCardDay2.InfoClimat = infoClimatManager;
-            FutureWeatherCardDay3.InfoClimat = infoClimatManager;
-            FutureWeatherCardDay4.InfoClimat = infoClimatManager;
-
+            CurrentWeatherCard.UpdateCard(infoClimatManager);
+            var dayForecasts = infoClimatManager.GetForecastsForDay(DateOnly.FromDateTime(DateTime.Now));
             for (var i = 1; i <= 4; i++)
             {
                 switch (i)
@@ -201,24 +199,34 @@ namespace WeatherStation
                     case 1:
                         FutureWeatherCardDay1.ForecastDate = DateOnly.FromDateTime(DateTime.Now.AddDays(i));
                         FutureWeatherCardDay1.UpdateCard(infoClimatManager);
+                        dayForecastCount = Math.Max(dayForecastCount, infoClimatManager.GetCountForecastForDay(DateOnly.FromDateTime(DateTime.Now.AddDays(i))));
                         break;
                     case 2:
                         FutureWeatherCardDay2.ForecastDate = DateOnly.FromDateTime(DateTime.Now.AddDays(i));
                         FutureWeatherCardDay2.UpdateCard(infoClimatManager);
+                        dayForecastCount = Math.Max(dayForecastCount, infoClimatManager.GetCountForecastForDay(DateOnly.FromDateTime(DateTime.Now.AddDays(i))));
                         break;
                     case 3:
                         FutureWeatherCardDay3.ForecastDate = DateOnly.FromDateTime(DateTime.Now.AddDays(i));
                         FutureWeatherCardDay3.UpdateCard(infoClimatManager);
+                        dayForecastCount = Math.Max(dayForecastCount, infoClimatManager.GetCountForecastForDay(DateOnly.FromDateTime(DateTime.Now.AddDays(i))));
                         break;
                     case 4:
                         FutureWeatherCardDay4.ForecastDate = DateOnly.FromDateTime(DateTime.Now.AddDays(i));
                         FutureWeatherCardDay4.UpdateCard(infoClimatManager);
+                        dayForecastCount = Math.Max(dayForecastCount, infoClimatManager.GetCountForecastForDay(DateOnly.FromDateTime(DateTime.Now.AddDays(i))));
                         break;
-
                 }
 
             }
+
+            while (dayForecasts?.Count < dayForecastCount)
+            {
+                dayForecasts.Insert(0, null);
+            }
+            TemperatureBarCurrentDay.ForecastDatas = dayForecasts;
         }
+
 
         /// <summary>
         /// Opens the tools window, allowing the user to modify or select additional tools or settings related to the current city.
