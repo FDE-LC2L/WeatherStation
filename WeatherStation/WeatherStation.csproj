@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.22000.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <ApplicationIcon>.Assets\Icons\station.ico</ApplicationIcon>
+    <Title>LC2L Weather Station</Title>
+    <Copyright>LC2L Informatique</Copyright>
+    <Company>LC2L Informatique</Company>
+    <Authors>LC2L Informatique</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include=".Assets\Icons\iot.ico" />
+    <Content Include=".Assets\Icons\station.ico" />
+    <Resource Include=".Assets\Images\search-256x256.png" />
+    <Resource Include=".Assets\Images\check-256x256.png" />
+    <Resource Include=".Assets\Images\tools-256x256.png" />
+    <Resource Include=".Assets\Weather\light_showers_no_sun.png" />
+    <Resource Include=".Assets\Weather\showers_no_sun.png" />
+    <Resource Include=".Assets\Weather\hard_rain.png" />
+    <Resource Include=".Assets\Weather\light_rain.png" />
+    <Resource Include=".Assets\Weather\light_showers.png" />
+    <Resource Include=".Assets\Weather\no_rain.png" />
+    <Resource Include=".Assets\Weather\showers.png" />
+    <Resource Include=".Assets\Weather\sunny.png" />
+    <Resource Include=".Assets\Weather\cloudy.png" />
+    <Resource Include=".Assets\Weather\hard_cloudy.png" />
+    <Resource Include=".Assets\Weather\partly_cloudy.png" />
+    <Resource Include=".Assets\Weather\mostly_sunny.png" />
+    <Resource Include=".Assets\Weather\clear-day.png" />
+    <Resource Include=".Assets\Images\cancel_flat-256x256.png" />
+    <Content Include=".Fonts\LCD.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include=".Styles\Colors.xaml" />
+    <Page Include=".Styles\Common.xaml" />
+    <Page Include=".Styles\ImagesWeather.xaml" />
+    <Page Include=".Styles\Images.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppCommon\AppCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <ImageSource x:Key="imgClearDay">\.Assets\Weather\sunny.png</ImageSource>
+    <ImageSource x:Key="imgMostlySunny">\.Assets\Weather\mostly_sunny.png</ImageSource>
+    <ImageSource x:Key="imgPartlyCloudy">\.Assets\Weather\partly_cloudy.png</ImageSource>
+    <ImageSource x:Key="imgCloudy">/.Assets/Weather/cloudy.png</ImageSource>
+    <ImageSource x:Key="imgHardCloudy">/.Assets/Weather/hard_cloudy.png</ImageSource>
+
+
+    <ImageSource x:Key="imgNoRain">\.Assets\Weather\no_rain.png</ImageSource>
+    <ImageSource x:Key="imgLightRain">\.Assets\Weather\light_showers_no_sun.png</ImageSource>
+    <ImageSource x:Key="imgModerateRain">\.Assets\Weather\showers_no_sun.png</ImageSource>
+    <ImageSource x:Key="imgHeavyRain">\.Assets\Weather\light_rain.png</ImageSource>
+    <ImageSource x:Key="imgVeryHeavyRain">\.Assets\Weather\hard_rain.png</ImageSource>
+
+
+
+</ResourceDictionary>

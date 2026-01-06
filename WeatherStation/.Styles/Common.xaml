@@ -1,0 +1,93 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    x:Name="CommonStyleResources">
+
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <LinearGradientBrush x:Key="BrushCommonLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayGradient1}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayGradient2}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayGradient1}" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushLightLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradient1}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient2}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient1}" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushSensorZoneLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
+        <GradientStop Offset="0.20" Color="{StaticResource clrMainDisplayLightGradient2}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient2}" />
+    </LinearGradientBrush>
+
+
+
+    <LinearGradientBrush x:Key="BrushFutureWeatherCardLinearGradient" StartPoint="0.1,0" EndPoint="0.5,1">
+        <GradientStop Offset="0.5" Color="{StaticResource clrMainDisplayLightGradient2}" />
+        <GradientStop Offset="0.1" Color="{StaticResource clrMainDisplayLightGradient1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrMainDisplayLightGradient2}" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushProductButtonLinearGradient" StartPoint="0.2,0" EndPoint="0.5,1">
+        <GradientStop Offset="0.20" Color="{StaticResource clrProductButtonGradient2}" />
+        <GradientStop Offset="0.5" Color="{StaticResource clrProductButtonGradient1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrProductButtonGradient2}" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushDialogLinearGradient" StartPoint="0,0" EndPoint="1.5,0">
+        <GradientStop Offset="0.2" Color="{StaticResource clrWindowAuthenticationGradient1}" />
+        <GradientStop Offset="0.8" Color="{StaticResource clrWindowAuthenticationGradient2}" />
+    </LinearGradientBrush>
+
+
+    <Style
+        x:Key="InternalInformationLabelStyle"
+        BasedOn="{StaticResource {x:Type Label}}"
+        TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Foreground" Value="{StaticResource clrForegroundInternalInformation}" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+    </Style>
+
+    <Style x:Key="LabelMandatoryStarStyle" TargetType="Label">
+        <Setter Property="Content" Value="*" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource clrMandatoryZone}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style
+        x:Key="ReadOnlyTextBoxStyle"
+        BasedOn="{StaticResource {x:Type TextBox}}"
+        TargetType="{x:Type TextBox}">
+        <Style.Triggers>
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="Background" Value="{StaticResource clrReadOnlyColor}" />
+                <Setter Property="IsTabStop" Value="False" />
+            </Trigger>
+            <Trigger Property="IsReadOnly" Value="False">
+                <!--  Setter Property="Background" Value="{x:Null}" /  -->
+                <Setter Property="IsTabStop" Value="True" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TextBlockInternalInformationStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Foreground" Value="Green" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+
+</ResourceDictionary>

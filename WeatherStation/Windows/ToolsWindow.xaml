@@ -1,0 +1,167 @@
+﻿<local:BaseWindow
+    x:Class="WeatherStation.Windows.ToolsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appResx="clr-namespace:WeatherStation.Properties"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WeatherStation.Infrastructure"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:WeatherStation.UserControls"
+    Title="ToolsWindow"
+    Width="800"
+    Height="450"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    WindowStyle="None"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource BrushSensorZoneLinearGradient}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            x:Name="TextBlockWindowTitle"
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Center"
+            FontSize="45"
+            FontWeight="Bold"
+            Text="{x:Static appResx:Resources.AppParameters}" />
+
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            FontSize="40"
+            FontWeight="Bold"
+            Text="{x:Static appResx:Resources.LibelPostalCode}" />
+
+        <TextBox
+            x:Name="TextBoxPostalCode"
+            Grid.Row="1"
+            Grid.Column="1"
+            FontSize="35"
+            FontWeight="Bold"
+            TextChanged="TextBoxPostalCode_TextChanged" />
+
+        <uc:ImageButton
+            x:Name="ImageButtonSearchPostalCode"
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="80"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Click="ImageButtonSearchPostalCode_Click"
+            ImageSrc="{StaticResource imgSearch}"
+            Orientation="Horizontal"
+            Text="" />
+
+
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="35"
+            FontWeight="Bold"
+            Text="{x:Static appResx:Resources.CurrentCity}" />
+
+
+        <TextBlock
+            x:Name="TextBlockCurrentCity"
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            FontSize="40"
+            FontWeight="Bold"
+            Text="Ville" />
+
+        <StackPanel
+            Grid.Row="4"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Orientation="Vertical">
+
+            <TextBlock
+                x:Name="TextBlockPostalCode"
+                Margin="30,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="30"
+                FontWeight="Bold"
+                Text="PostalCode" />
+
+            <TextBlock
+                x:Name="TextBlockLatitude"
+                Margin="30,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="30"
+                FontWeight="Bold"
+                Text="Latitude" />
+
+
+            <TextBlock
+                x:Name="TextBlockLongitude"
+                Margin="30,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="30"
+                FontWeight="Bold"
+                Text="Longitude" />
+
+        </StackPanel>
+
+
+
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Right"
+            Background="{StaticResource BrushSensorZoneLinearGradient}"
+            Orientation="Horizontal">
+
+            <uc:ImageButton
+                x:Name="ImageButtonOk"
+                Width="80"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Click="ImageButtonOk_Click"
+                ImageSrc="{StaticResource imgOk}"
+                Orientation="Horizontal"
+                Text="" />
+
+            <uc:ImageButton
+                x:Name="ImageButtonCancel"
+                Width="80"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Click="ImageButtonCancel_Click"
+                ImageSrc="{StaticResource imgCancel}"
+                Orientation="Horizontal"
+                Text="" />
+
+        </StackPanel>
+
+    </Grid>
+</local:BaseWindow>

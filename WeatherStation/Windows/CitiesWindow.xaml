@@ -1,0 +1,83 @@
+﻿<local:BaseWindow
+    x:Class="WeatherStation.Windows.CitiesWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:appResx="clr-namespace:WeatherStation.Properties"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WeatherStation.Infrastructure"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:WeatherStation.UserControls"
+    Title="CitiesWindow"
+    Width="800"
+    Height="450"
+    WindowStartupLocation="CenterOwner"
+    WindowState="Maximized"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Grid Background="{StaticResource BrushSensorZoneLinearGradient}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="20*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock
+            x:Name="TextBlockWindowTitle"
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Center"
+            FontSize="45"
+            FontWeight="Bold"
+            Text="{x:Static appResx:Resources.SelectCity}" />
+
+        <ListBox
+            x:Name="CitiesListBox"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            Margin="10"
+            Background="{StaticResource BrushSensorZoneLinearGradient}"
+            MouseDoubleClick="CitiesListBox_MouseDoubleClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        FontSize="40"
+                        FontWeight="Bold"
+                        Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Right"
+            Background="{StaticResource BrushSensorZoneLinearGradient}"
+            Orientation="Horizontal">
+
+
+            <uc:ImageButton
+                x:Name="ImageButtonCancel"
+                Width="80"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Click="ImageButtonCancel_Click"
+                ImageSrc="{StaticResource imgCancel}"
+                Orientation="Horizontal"
+                Text="" />
+
+        </StackPanel>
+    </Grid>
+</local:BaseWindow>

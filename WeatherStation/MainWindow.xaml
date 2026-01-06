@@ -1,0 +1,119 @@
+﻿<local:BaseWindow
+    x:Class="WeatherStation.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WeatherStation.Infrastructure"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:WeatherStation.UserControls"
+    Title="MainWindow"
+    Width="800"
+    Height="650"
+    Background="{StaticResource BrushDialogLinearGradient}"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Label
+                    Name="LabelLocalIp"
+                    HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="360" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="75*" />
+                <!--    -->
+            </Grid.ColumnDefinitions>
+
+            <DockPanel
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Grid.Column="0"
+                Margin="1"
+                VerticalAlignment="Stretch">
+                <StackPanel
+                    Height="40"
+                    Background="{StaticResource BrushSensorZoneLinearGradient}"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+                    <uc:ImageButton
+                        Width="80"
+                        Click="ImageButton_Click"
+                        ImageSrc="{StaticResource imgTools}"
+                        Orientation="Horizontal"
+                        Text="" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            x:Name="TextBlockCurrentCity"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="CurrentCity" />
+                        <TextBlock
+                            x:Name="TextBlockCurrentCoordinates"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="GPS" />
+
+                    </StackPanel>
+                </StackPanel>
+
+                <uc:SensorDisplay
+                    x:Name="SensorDisplayMain"
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Top" />
+
+
+            </DockPanel>
+
+
+            <uc:CurrentWeatherCard
+                x:Name="CurrentWeatherCard"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Grid.Column="1" />
+
+
+            <Grid
+                x:Name="GridWeather"
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200*" />
+                    <ColumnDefinition Width="200*" />
+                    <ColumnDefinition Width="200*" />
+                    <ColumnDefinition Width="89*" />
+                    <ColumnDefinition Width="111*" />
+                </Grid.ColumnDefinitions>
+                <uc:FutureWeatherCard x:Name="FutureWeatherCardDay1" Grid.Column="0" />
+                <uc:FutureWeatherCard x:Name="FutureWeatherCardDay2" Grid.Column="1" />
+                <uc:FutureWeatherCard x:Name="FutureWeatherCardDay3" Grid.Column="2" />
+                <uc:FutureWeatherCard
+                    x:Name="FutureWeatherCardDay4"
+                    Grid.Column="3"
+                    Grid.ColumnSpan="2" />
+            </Grid>
+
+
+        </Grid>
+    </DockPanel>
+</local:BaseWindow>
