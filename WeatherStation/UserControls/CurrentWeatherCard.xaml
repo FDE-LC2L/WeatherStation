@@ -17,11 +17,13 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="65" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
 
         <Image
@@ -65,31 +67,32 @@
                 Text="{Binding ElementName=ThisCurrentWeatherCard, Path=FormattedDate}" />
         </Grid>
 
-        <TextBlock
-            x:Name="TextBlockCloudiness"
-            Grid.Row="0"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="24"
-            FontWeight="Bold"
-            Text="{Binding ElementName=ThisCurrentWeatherCard, Path=CloudinessText}" />
+        <StackPanel
+            Grid.Row="4"
+            Grid.Column="0"
+            Orientation="Vertical">
+            <TextBlock
+                x:Name="TextBlockCloudiness"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="24"
+                FontWeight="Bold"
+                Text="{Binding ElementName=ThisCurrentWeatherCard, Path=CloudinessText}" />
 
-        <TextBlock
-            x:Name="TextBlockTemp"
-            Grid.Row="1"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="24"
-            FontWeight="Bold">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0:0.0}° - {1:0.0}°">
-                    <Binding ElementName="ThisCurrentWeatherCard" Path="MinTemp" />
-                    <Binding ElementName="ThisCurrentWeatherCard" Path="MaxTemp" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+            <TextBlock
+                x:Name="TextBlockTemp"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="24"
+                FontWeight="Bold">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:0.0}° - {1:0.0}°">
+                        <Binding ElementName="ThisCurrentWeatherCard" Path="MinTemp" />
+                        <Binding ElementName="ThisCurrentWeatherCard" Path="MaxTemp" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
 
     </Grid>
 </local:BaseWeatherCard>

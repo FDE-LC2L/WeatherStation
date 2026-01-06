@@ -7,6 +7,7 @@ using WeatherStation.Geo;
 using WeatherStation.Infrastructure;
 using WeatherStation.WeatherData.InfoClimat;
 using WeatherStation.Windows;
+using Windows.ApplicationModel.Background;
 
 namespace WeatherStation
 {
@@ -14,28 +15,47 @@ namespace WeatherStation
     public partial class MainWindow : BaseWindow
     {
         #region Fields
+        private const int ForecastUpdateIntervalMinutes = 30;
         private RestApiServer _apiServer = null!;
         private readonly DispatcherTimer _timerForecast;
+        private readonly DispatcherTimer _timerClock;
         private City? _currentCity = null;
+        private string _currentTimeString = DateTime.Now.ToString("HH:mm");
         #endregion
 
         #region Ctor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// Sets up the main window components and initializes the forecast and clock timers.
+        /// The forecast timer interval is set to the delay until the next forecast update slot,
+        /// as defined by <see cref="ForecastUpdateIntervalMinutes"/>. The clock timer interval is set to update every minute.
+        /// Event handlers are attached to each timer's Tick event to trigger periodic updates.
+        /// </summary>
         public MainWindow()
-        {
+        {            
             InitializeComponent();
+            // Create and configure the forecast timer with the interval until the next forecast update slot
             _timerForecast = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMinutes(30)
+                Interval = GetDelayToNextSlot(ForecastUpdateIntervalMinutes)
             };
             _timerForecast.Tick += TimerForecast_Tick;
+            // Create and configure the clock timer with the interval until the next minute
+            _timerClock = new DispatcherTimer
+            {
+                Interval = GetDelayToNextSlot(1)
+            };            
+            _timerClock.Tick += TimerClock_Tick;
         }
+
+
         #endregion
 
         protected override void FirstInit()
         {
             base.FirstInit();
             _currentCity = AppParameters.Settings.CurrentCity;
-            TextBlockCurrentCity.Text = _currentCity?.FormattedName ?? "No city selected";            
+            TextBlockCurrentCity.Text = _currentCity?.FormattedName ?? "No city selected";
             _apiServer = new RestApiServer();
             _apiServer.SensorDataReceived += (sender, data) =>
             {
@@ -51,18 +71,43 @@ namespace WeatherStation
             base.DelayedFirstInit();
             SearchNetworkInterfaces();
             _timerForecast.Start();
-            Task.Run(() => Dispatcher.InvokeAsync(async () =>
-            {
-                await UpdateForecast(_currentCity);
-            }));
+            _timerClock.Start();
+            _ = UpdateForecast(_currentCity);
             SetComponents();
+
+
+
+            TemperatureBarCurrentDay.Values = new double[] { 12, 14, 15, 16, 18, 20, 21, 20, 19, 17, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
         }
 
         protected override void SetComponents()
         {
             base.SetComponents();
+            TextBlockCurrentTime.Text = _currentTimeString;
             TextBlockCurrentCity.Text = _currentCity?.FormattedName ?? string.Empty;
             TextBlockCurrentCoordinates.Text = _currentCity is object ? $"{_currentCity.Center.coordinates[1].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}, {_currentCity.Center.coordinates[0].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}" : string.Empty;
+        }
+
+        /// <summary>
+        /// Calculates the delay until the next time slot, based on the specified interval in minutes.
+        /// For example, with intervalMinutes = 30, the next slot will be on the hour or half hour.
+        /// </summary>
+        /// <param name="intervalMinutes">The interval in minutes between each slot (e.g., 30 for half-hour, 15 for quarter-hour).</param>
+        /// <returns>The TimeSpan until the next slot.</returns>
+        private static TimeSpan GetDelayToNextSlot(int intervalMinutes)
+        {
+            var now = DateTime.Now;
+            var minutesPastSlot = now.Minute % intervalMinutes;
+            var minutesToNextSlot = intervalMinutes - minutesPastSlot;
+            var nextSlot = new DateTime(
+                now.Year,
+                now.Month,
+                now.Day,
+                now.Hour,
+                now.Minute,
+                0,
+                DateTimeKind.Local).AddMinutes(minutesToNextSlot);
+            return nextSlot - now;
         }
 
         /// <summary>
@@ -140,7 +185,7 @@ namespace WeatherStation
         {
             if (city is null) { return; }
             var infoClimatManager = new InfoClimatManager(city);
-            await infoClimatManager.LoadInfoClimatData();            
+            await infoClimatManager.LoadInfoClimatData();
             CurrentWeatherCard.InfoClimat = infoClimatManager;
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
             CurrentWeatherCard.UpdateCard();
@@ -190,7 +235,7 @@ namespace WeatherStation
                 AppParameters.Settings.CurrentCity = _currentCity;
                 SetComponents();
                 _ = UpdateForecast(_currentCity);
-            }            
+            }
         }
 
         #region example data
@@ -2395,10 +2440,18 @@ namespace WeatherStation
 
         private void TimerForecast_Tick(object? sender, EventArgs e)
         {
+            _timerForecast.Interval = GetDelayToNextSlot(ForecastUpdateIntervalMinutes);
             Dispatcher.Invoke(async () =>
             {
                 await UpdateForecast(_currentCity);
             });
+        }
+
+        private void TimerClock_Tick(object? sender, EventArgs e)
+        {
+            _timerClock.Interval = GetDelayToNextSlot(1);
+            _currentTimeString = DateTime.Now.ToString("HH:mm");
+            SetComponents();
         }
 
         private void ImageButton_Click(object sender, System.Windows.RoutedEventArgs e)

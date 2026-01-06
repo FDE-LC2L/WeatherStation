@@ -29,13 +29,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="360" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25*" />
-                <ColumnDefinition Width="75*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="25*" />
                 <!--    -->
             </Grid.ColumnDefinitions>
 
@@ -85,15 +86,39 @@
             <uc:CurrentWeatherCard
                 x:Name="CurrentWeatherCard"
                 Grid.Row="0"
-                Grid.RowSpan="3"
+                Grid.RowSpan="2"
                 Grid.Column="1" />
+
+            <uc:TemperatureBar
+                x:Name="TemperatureBarCurrentDay"
+                Grid.Row="2"
+                Grid.Column="1"
+                VerticalContentAlignment="Center" />
+
+            <Grid
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Grid.Column="2"
+                Background="{StaticResource BrushSensorZoneLinearGradient}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    x:Name="TextBlockCurrentTime"
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    FontSize="60"
+                    FontWeight="Bold"
+                    Text="00:00" />
+            </Grid>
 
 
             <Grid
                 x:Name="GridWeather"
                 Grid.Row="3"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="3"
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
