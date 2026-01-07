@@ -58,6 +58,8 @@
             Grid.Column="1"
             FontSize="35"
             FontWeight="Bold"
+            PreviewMouseUp="TextBoxPostalCode_PreviewMouseUp"
+            PreviewTextInput="TextBoxPostalCode_PreviewTextInput"
             TextChanged="TextBoxPostalCode_TextChanged" />
 
         <uc:ImageButton

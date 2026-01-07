@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using KeyPad;
+using System.Diagnostics;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using WeatherStation.Api;
@@ -12,7 +14,9 @@ namespace WeatherStation.Windows
     /// </summary>
     public partial class ToolsWindow : BaseWindow
     {
+        #region Fields
         public City? CurrentCity { get; set; }
+        #endregion
 
         #region Ctor
         public ToolsWindow(Window owner, City? currentCity) : base(owner)
@@ -98,7 +102,17 @@ namespace WeatherStation.Windows
         private void TextBoxPostalCode_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetComponents();
+        }     
+
+        private void TextBoxPostalCode_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
         }
+
+        private void TextBoxPostalCode_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Keypad.Show(this, TextBoxPostalCode, Keypad.KeypadHorizontalAlignment.Center, Keypad.KeypadVerticalAlignment.Bottom);
+        }       
         #endregion
     }
 }
