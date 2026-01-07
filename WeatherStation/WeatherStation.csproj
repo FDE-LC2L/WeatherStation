@@ -17,6 +17,8 @@
   <ItemGroup>
     <Content Include=".Assets\Icons\iot.ico" />
     <Content Include=".Assets\Icons\station.ico" />
+    <Resource Include=".Assets\Images\half-moon-256x256.png" />
+    <Resource Include=".Assets\Images\sun-256x256.png" />
     <Resource Include=".Assets\Images\search-256x256.png" />
     <Resource Include=".Assets\Images\check-256x256.png" />
     <Resource Include=".Assets\Images\tools-256x256.png" />

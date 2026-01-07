@@ -162,4 +162,10 @@
   <data name="LibelLongitude" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="LibelSunrise" xml:space="preserve">
+    <value>Levée</value>
+  </data>
+  <data name="LibelSunset" xml:space="preserve">
+    <value>Couché</value>
+  </data>
 </root>

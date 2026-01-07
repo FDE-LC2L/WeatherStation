@@ -5,6 +5,8 @@
     <ImageSource x:Key="imgCancel">\.Assets\Images\cancel_flat-256x256.png</ImageSource>
     <ImageSource x:Key="imgTools">\.Assets\Images\tools-256x256.png</ImageSource>
     <ImageSource x:Key="imgOk">\.Assets\Images\check-256x256.png</ImageSource>
+    <ImageSource x:Key="imgSunriseSunset">\.Assets\Images\sun-256x256.png</ImageSource>
+    <ImageSource x:Key="imgMoonriseMoonset">\.Assets\Images\half-moon-256x256.png</ImageSource>
 
 
 

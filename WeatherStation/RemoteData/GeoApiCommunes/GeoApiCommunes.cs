@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WeatherStation.Geo
+namespace WeatherStation.RemoteData.GeoApiCommunes
 {
     public class CityCenter
     {
@@ -41,5 +41,31 @@ namespace WeatherStation.Geo
         [JsonIgnore]
         public string FormattedName { get => $"{Name} {PostalCodes[0]}"; }
 
+        public static City? GetDefaultCity()
+        {
+            var json = """
+                    
+                        {
+                        "nom": "Bayonne",
+                        "code": "64102",
+                        "codeDepartement": "64",
+                        "siren": "216401026",
+                        "codeEpci": "200067106",
+                        "codeRegion": "75",
+                        "codesPostaux": [
+                            "64100"
+                        ],
+                        "population": 53312
+                        }
+                    
+             """;
+            var city = System.Text.Json.JsonSerializer.Deserialize<City>(json);
+            city?.Center.type = "Point";
+            city?.Center.coordinates.Add(-1.474301d);
+            city?.Center.coordinates.Add(43.4844d);
+            return city;
+
+
+        }
     }
 }

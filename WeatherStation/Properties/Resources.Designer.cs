@@ -169,6 +169,24 @@ namespace WeatherStation.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Levée.
+        /// </summary>
+        public static string LibelSunrise {
+            get {
+                return ResourceManager.GetString("LibelSunrise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Couché.
+        /// </summary>
+        public static string LibelSunset {
+            get {
+                return ResourceManager.GetString("LibelSunset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Aucune ville trouvée pour ce code postal.
         /// </summary>
         public static string NoCityFoundForThisPostalCode {

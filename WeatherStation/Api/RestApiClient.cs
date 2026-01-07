@@ -56,6 +56,21 @@ namespace WeatherStation.Api
             return await response.Content.ReadAsStringAsync();
         }
 
+        /// <summary>
+        /// Sends an HTTP GET request to the French governmental Geo API to retrieve information about communes.
+        /// </summary>
+        /// <param name="postalCode">
+        /// The postal code of the commune to search for. If null or empty, this parameter is ignored.
+        /// </param>
+        /// <param name="cityName">
+        /// The name of the commune to search for. This parameter is optional and can be null.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Task{String}"/> representing the asynchronous operation, containing the response body in JSON format as a string.
+        /// </returns>        
+        /// <exception cref="HttpRequestException">
+        /// Thrown when the HTTP response indicates an unsuccessful status code.
+        /// </exception>
         public async Task<string> GetInfoCommunesAsync(string? postalCode, string? cityName = null)
         {
             var parameters = $"fields=nom,code,codesPostaux,centre,contour,population&format=json";
@@ -70,6 +85,17 @@ namespace WeatherStation.Api
             var response = await _httpClient.GetAsync($"{GeoApiCommunes}?{parameters}");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<string> GetEphemerisAsync(double latitude, double longitude)
+        {
+            // Configuration
+            string apiKey = "8e063262bff04d139f6ef145be87d710";        
+            string url = "https://api.ipgeolocation.io/astronomy?apiKey={0}&lat={1}&long={2}";
+            var requestUrl = string.Format(url, apiKey, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture));
+            var response = await _httpClient.GetAsync(requestUrl);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();            
         }
 
 

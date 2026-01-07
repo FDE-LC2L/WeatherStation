@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using WeatherStation.Geo;
+using WeatherStation.RemoteData.GeoApiCommunes;
 
 namespace WeatherStation.Infrastructure
 {

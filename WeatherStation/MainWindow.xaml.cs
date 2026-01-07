@@ -1,11 +1,13 @@
 ﻿using AppCommon.Helpers;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Runtime.Versioning;
 using System.Windows.Threading;
 using WeatherStation.Api;
-using WeatherStation.Geo;
 using WeatherStation.Infrastructure;
+using WeatherStation.RemoteData.GeoApiCommunes;
+using WeatherStation.RemoteData.IPGeolocation;
 using WeatherStation.WeatherData.InfoClimat;
 using WeatherStation.Windows;
 
@@ -54,8 +56,7 @@ namespace WeatherStation
         protected override void FirstInit()
         {
             base.FirstInit();
-            _currentCity = AppParameters.Settings.CurrentCity;
-            TextBlockCurrentCity.Text = _currentCity?.FormattedName ?? "No city selected";
+            _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
             _apiServer = new RestApiServer();
             _apiServer.SensorDataReceived += (sender, data) =>
             {
@@ -74,19 +75,22 @@ namespace WeatherStation
             SearchNetworkInterfaces();
             _timerForecast.Start();
             _timerClock.Start();
-            _ = UpdateForecast(_currentCity);
+            UpdateData();       
             SetComponents();
-
-
-
             TemperatureBarCurrentDay.Values = [-5, 30, -5, 30, -5, 30, -5, 30];
+        }
+
+        private void UpdateData()
+        {
+            _ = UpdateForecast(_currentCity);
+            _ = UpdateEphemeris(_currentCity);
         }
 
         protected override void SetComponents()
         {
             base.SetComponents();
             TextBlockCurrentTime.Text = _currentTimeString;
-            TextBlockCurrentCity.Text = _currentCity?.FormattedName ?? string.Empty;
+            TextBlockCurrentCity.Text = !string.IsNullOrWhiteSpace(_currentCity?.FormattedName) ? _currentCity?.FormattedName : "No city selected";
             TextBlockCurrentCoordinates.Text = _currentCity is object ? $"{_currentCity.Center.coordinates[1].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}, {_currentCity.Center.coordinates[0].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}" : string.Empty;
         }
 
@@ -217,7 +221,6 @@ namespace WeatherStation
                         dayForecastCount = Math.Max(dayForecastCount, infoClimatManager.GetCountForecastForDay(DateOnly.FromDateTime(DateTime.Now.AddDays(i))));
                         break;
                 }
-
             }
 
             while (dayForecasts?.Count < dayForecastCount)
@@ -228,10 +231,24 @@ namespace WeatherStation
         }
 
 
+        private async Task UpdateEphemeris(City? city)
+        {
+            if (city is null) { return; }
+            var ephemeris = new Ephemeris(city);
+            var ephemerisData  = await ephemeris.GetEphemerisData();
+            if (ephemerisData is object)
+            {
+                TextBlockSunrise.Text = ephemerisData.Sunrise;
+                TextBlockSunset.Text = ephemerisData.Sunset;
+                TextBlockMoonset.Text = ephemerisData.Moonset;
+                TextBlockMoonrise.Text = ephemerisData.Moonrise;
+            }
+        }
+
         /// <summary>
-        /// Opens the tools window, allowing the user to modify or select additional tools or settings related to the current city.
-        /// If the user confirms their selection in the tools window, the current city is updated accordingly,
-        /// the application settings are synchronized, the UI components are refreshed, and the weather forecast is updated for the new city.
+        /// Opens the tools window, allowing the user to modify or select additional tools or settings related to the current _city.
+        /// If the user confirms their selection in the tools window, the current _city is updated accordingly,
+        /// the application settings are synchronized, the UI components are refreshed, and the weather forecast is updated for the new _city.
         /// </summary>
         private void ShowTools()
         {
@@ -239,9 +256,9 @@ namespace WeatherStation
             if (toolsWindow.ShowDialog() == true)
             {
                 _currentCity = toolsWindow.CurrentCity;
-                AppParameters.Settings.CurrentCity = _currentCity;
+                AppParameters.Settings.CurrentCity = _currentCity;                
+                UpdateData();
                 SetComponents();
-                _ = UpdateForecast(_currentCity);
             }
         }
 
@@ -2440,18 +2457,17 @@ namespace WeatherStation
         #endregion
 
         #region IHM
-        private async void ButtonTest_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            await UpdateForecast(_currentCity);
-        }
-
         private void TimerForecast_Tick(object? sender, EventArgs e)
         {
             _timerForecast.Interval = GetDelayToNextSlot(ForecastUpdateIntervalMinutes);
+            UpdateData();
+            /*
             Dispatcher.Invoke(async () =>
             {
                 await UpdateForecast(_currentCity);
+                await UpdateEphemeris(_currentCity);
             });
+            */
         }
 
         private void TimerClock_Tick(object? sender, EventArgs e)
@@ -2465,8 +2481,15 @@ namespace WeatherStation
         {
             ShowTools();
         }
+
+        private void TextBlockInfoClimat_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.infoclimat.fr/",
+                UseShellExecute = true
+            });
+        }
         #endregion
-
-
     }
 }

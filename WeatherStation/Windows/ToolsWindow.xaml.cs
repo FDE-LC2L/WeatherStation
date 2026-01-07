@@ -4,8 +4,8 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using WeatherStation.Api;
-using WeatherStation.Geo;
 using WeatherStation.Infrastructure;
+using WeatherStation.RemoteData.GeoApiCommunes;
 
 namespace WeatherStation.Windows
 {
