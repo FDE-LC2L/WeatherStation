@@ -13,6 +13,22 @@ namespace WeatherStation.RemoteData.NominisCef
         private static DateOnly? _lastCallDate;
         #endregion
 
+        /// <summary>
+        /// Asynchronously loads the daily Nominis data if it has not already been retrieved for the current day.
+        /// </summary>
+        /// <param name="apiError">
+        /// An array of nullable <see cref="HttpStatusCode"/> used to report API errors.
+        /// The method sets the third element (index 2) to the HTTP status code in case of an error, or to null if the call succeeds.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
+        /// The result is a <see cref="DailyNominis"/> object containing the Nominis data for the current day,
+        /// or null if the data has already been loaded for today or if an error occurs.
+        /// </returns>
+        /// <remarks>
+        /// This method ensures that the Nominis API is not called more than once per day.
+        /// If the API call fails, the error is logged to the console and the error code is set in the <paramref name="apiError"/> array.
+        /// </remarks>
         public static async Task<DailyNominis?> LoadNominisDataAsync(HttpStatusCode?[] apiError)
         {
             if (_lastCallDate is null || _lastCallDate < DateOnly.FromDateTime(DateTime.Now))
