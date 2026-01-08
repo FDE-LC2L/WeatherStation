@@ -70,8 +70,14 @@
                             VerticalAlignment="Center"
                             FontSize="16"
                             Text="GPS" />
-
                     </StackPanel>
+                    <Image
+                        x:Name="ImageApiWarning"
+                        Width="40"
+                        Height="40"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center"
+                        Source="{StaticResource imgWarning}" />
                 </StackPanel>
 
                 <uc:SensorDisplay
@@ -103,6 +109,8 @@
                 Background="{StaticResource BrushSensorZoneLinearGradient}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="45" />
                     <RowDefinition Height="10" />
                     <RowDefinition Height="45" />
                     <RowDefinition Height="10" />
@@ -186,12 +194,35 @@
 
 
 
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+                        x:Name="ImageSaintOfTheDay"
+                        Width="40"
+                        Height="40"
+                        Grid.Column="0"
+                        Source="{StaticResource imgSaintOfTheDay}" />
+
+                    <TextBlock
+                        x:Name="TextBlockSaintOfTheDay"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="SaintOfTheDay" />
+                </Grid>
+
 
 
 
                 <TextBlock
                     x:Name="TextBlockInfoClimat"
-                    Grid.Row="6"
+                    Grid.Row="8"
                     FontSize="12"
                     FontWeight="Bold"
                     MouseUp="TextBlockInfoClimat_MouseUp"

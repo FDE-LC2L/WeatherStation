@@ -1,5 +1,4 @@
 ﻿using KeyPad;
-using System.Diagnostics;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -102,7 +101,7 @@ namespace WeatherStation.Windows
         private void TextBoxPostalCode_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetComponents();
-        }     
+        }
 
         private void TextBoxPostalCode_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
@@ -112,7 +111,7 @@ namespace WeatherStation.Windows
         private void TextBoxPostalCode_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Keypad.Show(this, TextBoxPostalCode, Keypad.KeypadHorizontalAlignment.Center, Keypad.KeypadVerticalAlignment.Bottom);
-        }       
+        }
         #endregion
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel;
 
 namespace KeyPad
 {
@@ -19,7 +19,7 @@ namespace KeyPad
 
         public enum KeypadVerticalAlignment
         {
-            Top,         
+            Top,
             Bottom
         }
 
@@ -46,7 +46,7 @@ namespace KeyPad
             DataContext = this;
             _parent = parent;
             _horizontalAlignment = horizontalAlignment;
-            _verticalAlignment = verticalAlignment;                     
+            _verticalAlignment = verticalAlignment;
         }
         #endregion
 
@@ -177,7 +177,7 @@ namespace KeyPad
         #region IHM
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SetControlPositions();            
+            SetControlPositions();
         }
         #endregion
     }

@@ -1,13 +1,14 @@
 ﻿using AppCommon.Helpers;
-using System;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.Versioning;
 using System.Windows.Threading;
+using System.Windows;
 using WeatherStation.Api;
 using WeatherStation.Infrastructure;
 using WeatherStation.RemoteData.GeoApiCommunes;
 using WeatherStation.RemoteData.IPGeolocation;
+using WeatherStation.RemoteData.NominisCef;
 using WeatherStation.WeatherData.InfoClimat;
 using WeatherStation.Windows;
 
@@ -23,6 +24,12 @@ namespace WeatherStation
         private readonly DispatcherTimer _timerClock;
         private City? _currentCity = null;
         private string _currentTimeString = DateTime.Now.ToString("HH:mm");
+        private string _sunrise = "Sunrise";
+        private string _sunset = "Sunset";
+        private string _moonrise = "Moonrise";
+        private string _moonset = "Moonset";
+        private string _saintOfTheDay = "SaintOfTheDay";
+        private HttpStatusCode?[] _apiError;
         #endregion
 
         #region Ctor
@@ -35,6 +42,7 @@ namespace WeatherStation
         /// </summary>
         public MainWindow()
         {
+            _apiError = new HttpStatusCode?[3] { HttpStatusCode.NotFound, HttpStatusCode.NotFound, HttpStatusCode.NotFound };
             InitializeComponent();
             // Create and configure the forecast timer with the interval until the next forecast update slot
             _timerForecast = new DispatcherTimer
@@ -48,15 +56,14 @@ namespace WeatherStation
                 Interval = GetDelayToNextSlot(1)
             };
             _timerClock.Tick += TimerClock_Tick;
-        }
 
+        }
 
         #endregion
 
         protected override void FirstInit()
         {
             base.FirstInit();
-            _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
             _apiServer = new RestApiServer();
             _apiServer.SensorDataReceived += (sender, data) =>
             {
@@ -65,6 +72,7 @@ namespace WeatherStation
                     SensorDisplayMain.SensorDataList.UpdateSensor(data);
                 });
             };
+            _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
             TemperatureBarCurrentDay.MinTemp = -5;
             TemperatureBarCurrentDay.MaxTemp = 30;
         }
@@ -75,15 +83,17 @@ namespace WeatherStation
             SearchNetworkInterfaces();
             _timerForecast.Start();
             _timerClock.Start();
-            UpdateData();       
+            _=UpdateData();
             SetComponents();
             TemperatureBarCurrentDay.Values = [-5, 30, -5, 30, -5, 30, -5, 30];
         }
 
-        private void UpdateData()
+        private async Task UpdateData()
         {
-            _ = UpdateForecast(_currentCity);
-            _ = UpdateEphemeris(_currentCity);
+            await UpdateForecast(_currentCity);
+            await UpdateEphemeris(_currentCity);
+            await UpdateNominis();
+            SetComponents();
         }
 
         protected override void SetComponents()
@@ -92,6 +102,12 @@ namespace WeatherStation
             TextBlockCurrentTime.Text = _currentTimeString;
             TextBlockCurrentCity.Text = !string.IsNullOrWhiteSpace(_currentCity?.FormattedName) ? _currentCity?.FormattedName : "No city selected";
             TextBlockCurrentCoordinates.Text = _currentCity is object ? $"{_currentCity.Center.coordinates[1].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}, {_currentCity.Center.coordinates[0].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}" : string.Empty;
+            TextBlockSunrise.Text = _sunrise;
+            TextBlockSunset.Text = _sunset;
+            TextBlockMoonset.Text = _moonset;
+            TextBlockMoonrise.Text = _moonrise;
+            TextBlockSaintOfTheDay.Text = _saintOfTheDay;
+            ImageApiWarning.Visibility = _apiError.Any(x => x is not null) ? Visibility.Visible : Visibility.Collapsed;            
         }
 
         /// <summary>
@@ -192,7 +208,7 @@ namespace WeatherStation
             if (city is null) { return; }
             var dayForecastCount = 0;
             var infoClimatManager = new InfoClimatManager(city);
-            await infoClimatManager.LoadInfoClimatData();
+            await infoClimatManager.LoadInfoClimatDataAsync(_apiError);
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
             CurrentWeatherCard.UpdateCard(infoClimatManager);
             var dayForecasts = infoClimatManager.GetForecastsForDay(DateOnly.FromDateTime(DateTime.Now));
@@ -235,14 +251,18 @@ namespace WeatherStation
         {
             if (city is null) { return; }
             var ephemeris = new Ephemeris(city);
-            var ephemerisData  = await ephemeris.GetEphemerisData();
-            if (ephemerisData is object)
-            {
-                TextBlockSunrise.Text = ephemerisData.Sunrise;
-                TextBlockSunset.Text = ephemerisData.Sunset;
-                TextBlockMoonset.Text = ephemerisData.Moonset;
-                TextBlockMoonrise.Text = ephemerisData.Moonrise;
-            }
+            var ephemerisData = await ephemeris.LoadEphemerisDataAsync(_apiError);
+            _sunrise = ephemerisData?.Sunrise ?? "Sunrise";
+            _sunset = ephemerisData?.Sunset ?? "Sunset";
+            _moonrise = ephemerisData?.Moonset ?? "Moonrise";
+            _moonset = ephemerisData?.Moonrise ?? "Moonset";
+        }
+
+        private async Task UpdateNominis()
+        {
+            var nominis = new Nominis();
+            var nominisData = await Nominis.LoadNominisDataAsync(_apiError);
+            _saintOfTheDay = nominisData?.Response?.SaintOfTheDay?.Name ?? "SaintOfTheDay";
         }
 
         /// <summary>
@@ -256,8 +276,8 @@ namespace WeatherStation
             if (toolsWindow.ShowDialog() == true)
             {
                 _currentCity = toolsWindow.CurrentCity;
-                AppParameters.Settings.CurrentCity = _currentCity;                
-                UpdateData();
+                AppParameters.Settings.CurrentCity = _currentCity;
+                _=UpdateData();
                 SetComponents();
             }
         }
@@ -2460,14 +2480,7 @@ namespace WeatherStation
         private void TimerForecast_Tick(object? sender, EventArgs e)
         {
             _timerForecast.Interval = GetDelayToNextSlot(ForecastUpdateIntervalMinutes);
-            UpdateData();
-            /*
-            Dispatcher.Invoke(async () =>
-            {
-                await UpdateForecast(_currentCity);
-                await UpdateEphemeris(_currentCity);
-            });
-            */
+            _=UpdateData();
         }
 
         private void TimerClock_Tick(object? sender, EventArgs e)

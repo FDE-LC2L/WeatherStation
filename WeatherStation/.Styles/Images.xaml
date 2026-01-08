@@ -7,6 +7,10 @@
     <ImageSource x:Key="imgOk">\.Assets\Images\check-256x256.png</ImageSource>
     <ImageSource x:Key="imgSunriseSunset">\.Assets\Images\sun-256x256.png</ImageSource>
     <ImageSource x:Key="imgMoonriseMoonset">\.Assets\Images\half-moon-256x256.png</ImageSource>
+    <ImageSource x:Key="imgSaintOfTheDay">/.Assets/Images/fete-256x256.png</ImageSource>
+    <ImageSource x:Key="imgWarning">/.Assets/Images/warning-256x256.png</ImageSource>
+
+    
 
 
 

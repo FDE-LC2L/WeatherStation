@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using WeatherStation.Api;
 using WeatherStation.RemoteData.GeoApiCommunes;
@@ -32,7 +33,7 @@ namespace WeatherStation.RemoteData.IPGeolocation
         /// A <see cref="DailyEphemeris"/> object containing the ephemeris data if the request is successful and
         /// the data has not already been fetched for the current day; otherwise, <c>null</c>.
         /// </returns>
-        public async Task<DailyEphemeris?> GetEphemerisData()
+        public async Task<DailyEphemeris?> LoadEphemerisDataAsync(System.Net.HttpStatusCode?[] apiError)
         {
             if (_lastCallDate is null || _lastCallDate < DateOnly.FromDateTime(DateTime.Now))
             {
@@ -42,13 +43,16 @@ namespace WeatherStation.RemoteData.IPGeolocation
                     var json = await apiClient.GetEphemerisAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
                     var response = JsonSerializer.Deserialize<DailyEphemeris>(json);
                     _lastCallDate = DateOnly.FromDateTime(DateTime.Now);
+                    apiError[1] = null;
                     return response;
                 }
-                catch (Exception ex)
+                catch (HttpRequestException ex)
                 {
                     Console.WriteLine($"Error fetching ephemeris data: {ex.Message}");
+                    apiError[1] = ex.StatusCode;
+                    _lastCallDate = null;
                     return null;
-                }    
+                }
             }
             return null;
         }
@@ -153,3 +157,4 @@ namespace WeatherStation.RemoteData.IPGeolocation
 
 
     }
+}

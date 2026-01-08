@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using WeatherStation.Api;
 using WeatherStation.RemoteData.GeoApiCommunes;
@@ -60,14 +62,23 @@ namespace WeatherStation.WeatherData.InfoClimat
         /// The JSON is then deserialized into a <see cref="WeatherResponse"/> instance.
         /// If the response contains forecasts, the internal state is updated accordingly.
         /// </remarks>
-        public async Task LoadInfoClimatData()
+        public async Task LoadInfoClimatDataAsync(HttpStatusCode?[] apiError)
         {
-            var apiClient = new RestApiClient();
-            var json = await apiClient.GetInfoClimatWheatherDataAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
-            var response = JsonSerializer.Deserialize<WeatherResponse>(json);
-            if (response?.Forecasts is object)
+            try
             {
-                _weatherResponse = response;
+                var apiClient = new RestApiClient();
+                var json = await apiClient.GetInfoClimatWheatherDataAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
+                var response = JsonSerializer.Deserialize<WeatherResponse>(json);
+                if (response?.Forecasts is object)
+                {
+                    _weatherResponse = response;
+                }
+                apiError[0] = null; // Indicate success
+            }
+            catch (HttpRequestException ex)
+            { 
+                Console.WriteLine($"Error loading InfoClimat data: {ex.Message}");
+                apiError[0] = ex.StatusCode; // Indicate an error occurred
             }
         }
 
