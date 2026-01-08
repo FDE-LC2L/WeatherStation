@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
@@ -55,12 +56,16 @@ namespace WeatherStation.Infrastructure
         public string AppTitle { get; private set; } = string.Empty;
         public string FileVersion { get; private set; } = string.Empty;
         public string AppConfiguration { get; private set; } = string.Empty;
+        public string InfoClimatApiKey { get; private set; } = string.Empty;
+        public string IpGeoLocationApiKey { get; private set; } = string.Empty;
+
         public DateTime AppCompilationDate { get; private set; }
         #endregion
 
         private AppSettingsManager()
         {
             LoadAssemblyAttributes(Assembly.GetExecutingAssembly());
+            ReadAppsSettingsFile();
         }
 
         public void LoadAssemblyAttributes(Assembly assembly)
@@ -153,6 +158,21 @@ namespace WeatherStation.Infrastructure
                 File.WriteAllText(_appSettingCompleteFileName, json);
             }
 
+        }
+
+        /// <summary>
+        /// Reads the application settings from the 'appsettings.json' file located in the application's base directory.        
+        /// </summary>
+        private void ReadAppsSettingsFile()
+        {
+            // Build the configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            // Read settings
+            InfoClimatApiKey = config["Api:InfoClimat:Key"] ?? string.Empty;
+            IpGeoLocationApiKey = config["Api:IpGeoLocation:Key"] ?? string.Empty;
         }
 
     }

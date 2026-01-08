@@ -1,9 +1,11 @@
 ﻿using AppCommon.Helpers;
+using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Runtime.Versioning;
-using System.Windows.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using WeatherStation.Api;
 using WeatherStation.Infrastructure;
 using WeatherStation.RemoteData.GeoApiCommunes;
@@ -83,18 +85,11 @@ namespace WeatherStation
             SearchNetworkInterfaces();
             _timerForecast.Start();
             _timerClock.Start();
-            _=UpdateData();
+            _ = UpdateData();
             SetComponents();
             TemperatureBarCurrentDay.Values = [-5, 30, -5, 30, -5, 30, -5, 30];
         }
 
-        private async Task UpdateData()
-        {
-            await UpdateForecast(_currentCity);
-            await UpdateEphemeris(_currentCity);
-            await UpdateNominis();
-            SetComponents();
-        }
 
         protected override void SetComponents()
         {
@@ -107,7 +102,17 @@ namespace WeatherStation
             TextBlockMoonset.Text = _moonset;
             TextBlockMoonrise.Text = _moonrise;
             TextBlockSaintOfTheDay.Text = _saintOfTheDay;
-            ImageApiWarning.Visibility = _apiError.Any(x => x is not null) ? Visibility.Visible : Visibility.Collapsed;            
+            ImageApiWarning.Visibility = _apiError.Any(x => x is not null) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+
+
+        private async Task UpdateData()
+        {
+            await UpdateForecast(_currentCity);
+            await UpdateEphemeris(_currentCity);
+            await UpdateNominis();
+            SetComponents();
         }
 
         /// <summary>
@@ -277,7 +282,7 @@ namespace WeatherStation
             {
                 _currentCity = toolsWindow.CurrentCity;
                 AppParameters.Settings.CurrentCity = _currentCity;
-                _=UpdateData();
+                _ = UpdateData();
                 SetComponents();
             }
         }
@@ -2480,7 +2485,7 @@ namespace WeatherStation
         private void TimerForecast_Tick(object? sender, EventArgs e)
         {
             _timerForecast.Interval = GetDelayToNextSlot(ForecastUpdateIntervalMinutes);
-            _=UpdateData();
+            _ = UpdateData();
         }
 
         private void TimerClock_Tick(object? sender, EventArgs e)

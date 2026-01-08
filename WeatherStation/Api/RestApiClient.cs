@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using WeatherStation.Infrastructure;
 
 namespace WeatherStation.Api
 {
@@ -9,12 +10,8 @@ namespace WeatherStation.Api
         //const string InfoClimatApiUrlTst = $"http://www.infoclimat.fr/public-api/gfs/json?_ll=43.863485,-0.702268&_auth={InfoClimatApiKey}";
 
 
-        const string InfoClimatApiKey = "AhgHEFYoBiRVeFNkBHIHLgRsATQPeVN0US1RMl86An8FbgJjB2dVM1U7USxXeAA2UH1XNFxnUGAAa1UtDH5TMgJoB2tWPQZhVTpTNgQrBywEKgFgDy9TdFEzUT5fNwJ%2FBWcCbgdhVSlVMlEtV2YAMlBnVyhcfFBpAGRVNgxkUzQCYgdjVjQGZFU7Uy4EKwc1BD8BYQ85U2lRNFEzXzcCMgVvAmcHbFUwVT9RLVdlADNQalc1XGFQaQBrVTcMflMvAhgHEFYoBiRVeFNkBHIHLgRiAT8PZA%3D%3D&_c=cb6a40c35f2808f273a58f02d80958ad";
-        const string InfoClimatApiUrl = "http://www.infoclimat.fr/public-api/gfs/json?_ll={0},{1}&_auth=" + InfoClimatApiKey;
-
-        const string GeoApiCommunes = "https://geo.api.gouv.fr/communes";
-
         private readonly HttpClient _httpClient;
+        private readonly AppSettingsManager appSettingsManager = AppSettingsManager.Instance;
         #endregion
 
         public RestApiClient()
@@ -48,8 +45,9 @@ namespace WeatherStation.Api
         /// Thrown when the HTTP response indicates an unsuccessful status code.
         /// </exception>
         public async Task<string> GetInfoClimatWheatherDataAsync(double latitude, double longitude)
-        {
-            var url = string.Format(InfoClimatApiUrl, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture));
+        {        
+            const string apiUrl = "http://www.infoclimat.fr/public-api/gfs/json?_ll={0},{1}&_auth={2}";
+            var url = string.Format(apiUrl, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), appSettingsManager.InfoClimatApiKey);
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
@@ -72,6 +70,7 @@ namespace WeatherStation.Api
         /// </exception>
         public async Task<string> GetInfoCommunesAsync(string? postalCode, string? cityName = null)
         {
+            const string GeoApiCommunes = "https://geo.api.gouv.fr/communes";
             var parameters = $"fields=nom,code,codesPostaux,centre,contour,population&format=json";
             if (!string.IsNullOrEmpty(postalCode))
             {
@@ -103,10 +102,8 @@ namespace WeatherStation.Api
         /// </exception>
         public async Task<string> GetEphemerisAsync(double latitude, double longitude)
         {
-            // Configuration
-            string apiKey = "8e063262bff04d139f6ef145be87d710";
             const string apiUrl = "https://api.ipgeolocation.io/astronomy?apiKey={0}&lat={1}&long={2}";
-            var requestUrl = string.Format(apiUrl, apiKey, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture));
+            var requestUrl = string.Format(apiUrl, appSettingsManager.IpGeoLocationApiKey, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture));
             var response = await _httpClient.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
