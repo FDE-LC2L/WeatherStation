@@ -1,7 +1,5 @@
 ﻿using AppCommon.Helpers;
-using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Runtime.Versioning;
 using System.Windows;

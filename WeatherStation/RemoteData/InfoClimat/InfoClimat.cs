@@ -76,7 +76,7 @@ namespace WeatherStation.WeatherData.InfoClimat
                 apiError[0] = null; // Indicate success
             }
             catch (HttpRequestException ex)
-            { 
+            {
                 Console.WriteLine($"Error loading InfoClimat data: {ex.Message}");
                 apiError[0] = ex.StatusCode; // Indicate an error occurred
             }

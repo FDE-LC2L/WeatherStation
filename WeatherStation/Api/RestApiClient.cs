@@ -45,7 +45,7 @@ namespace WeatherStation.Api
         /// Thrown when the HTTP response indicates an unsuccessful status code.
         /// </exception>
         public async Task<string> GetInfoClimatWheatherDataAsync(double latitude, double longitude)
-        {        
+        {
             const string apiUrl = "http://www.infoclimat.fr/public-api/gfs/json?_ll={0},{1}&_auth={2}";
             var url = string.Format(apiUrl, latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture), appSettingsManager.InfoClimatApiKey);
             var response = await _httpClient.GetAsync(url);

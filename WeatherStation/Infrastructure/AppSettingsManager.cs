@@ -10,6 +10,13 @@ namespace WeatherStation.Infrastructure
 {
     public partial class AppSettingsManager
     {
+        /// <summary>
+        /// Represents the local application settings managed by the application.
+        /// This partial class inherits from ObservableObject to support property change notifications,
+        /// enabling automatic UI updates when property values change.
+        /// It contains user-specific or session-specific parameters such as the last used network interface,
+        /// the last used postal code, and the current city.
+        /// </summary>
         public partial class LocalSettings : ObservableObject
         {
             [ObservableProperty]
@@ -42,7 +49,6 @@ namespace WeatherStation.Infrastructure
         public static AppSettingsManager Instance => _instance.Value;
 
         #endregion
-
 
         #region Fields
         private const string AppSettingFileName = "Settings.settings";
@@ -106,6 +112,21 @@ namespace WeatherStation.Infrastructure
             SetAppParamsFolder();
         }
 
+        /// <summary>
+        /// Reads the application settings from the 'appsettings.json' file located in the application's base directory.        
+        /// </summary>
+        private void ReadAppsSettingsFile()
+        {
+            // Build the configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            // Read settings
+            InfoClimatApiKey = config["Api:InfoClimat:Key"] ?? string.Empty;
+            IpGeoLocationApiKey = config["Api:IpGeoLocation:Key"] ?? string.Empty;
+        }
+
         private void SetAppParamsFolder()
         {
             _appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -160,20 +181,7 @@ namespace WeatherStation.Infrastructure
 
         }
 
-        /// <summary>
-        /// Reads the application settings from the 'appsettings.json' file located in the application's base directory.        
-        /// </summary>
-        private void ReadAppsSettingsFile()
-        {
-            // Build the configuration
-            var config = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
-            // Read settings
-            InfoClimatApiKey = config["Api:InfoClimat:Key"] ?? string.Empty;
-            IpGeoLocationApiKey = config["Api:IpGeoLocation:Key"] ?? string.Empty;
-        }
+
 
     }
 }
