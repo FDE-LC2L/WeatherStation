@@ -1,0 +1,39 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+copilot-instructions.md
+.github/
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+
+# Logs
+*.log
+
+# Packages
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.bak
+
+# JetBrains Rider/Resharper (optionnel)
+.idea/
+*.ReSharper
+*.DotSettings.user
+
+
+# SVN metadata (si vous avez copié des fichiers SVN)
+.svn/
+/WeatherStation/appsettings.json
