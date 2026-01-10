@@ -95,6 +95,7 @@ namespace WeatherStation.WeatherData.InfoClimat
         {
             if (_weatherResponse?.Forecasts is object && _weatherResponse.Forecasts.TryGetValue(date, out ForecastData? value))
             {
+                value.DateString = date;
                 return value;
             }
             return null;

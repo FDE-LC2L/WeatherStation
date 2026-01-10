@@ -9,6 +9,19 @@ using WeatherStation.Model;
 
 namespace WeatherStation.Api
 {
+    /// <summary>
+    /// Represents a REST API server that hosts HTTP endpoints for receiving and managing weather station sensor data.
+    /// This server provides a web API using ASP.NET Core with Swagger documentation support.
+    /// </summary>
+    /// <remarks>
+    /// The server exposes the following endpoints:
+    /// <list type="bullet">
+    /// <item><description>GET /api/status - Returns the current server status and timestamp</description></item>
+    /// <item><description>POST /api/sensor-data - Receives sensor data from weather station devices</description></item>
+    /// </list>
+    /// The server can be started on a specific IP address and port, and notifies subscribers through the 
+    /// <see cref="SensorDataReceived"/> event when new sensor data is received.
+    /// </remarks>
     public class RestApiServer
     {
         #region Fields
@@ -17,6 +30,19 @@ namespace WeatherStation.Api
         private IHost? _host;
         #endregion
 
+        /// <summary>
+        /// Starts the REST API server asynchronously on the specified IP address and port.
+        /// </summary>
+        /// <param name="ip">The IP address on which the server will listen for incoming HTTP requests.</param>
+        /// <param name="port">The port number for the server. Defaults to 5000 if not specified.</param>
+        /// <remarks>
+        /// This method configures and launches an ASP.NET Core web host with Swagger documentation.
+        /// It defines the following endpoints:
+        /// <list type="bullet">
+        /// <item><description>GET /api/status: Returns the current server status and timestamp.</description></item>
+        /// <item><description>POST /api/sensor-data: Receives sensor data from weather station devices and triggers the <see cref="SensorDataReceived"/> event.</description></item>
+        /// </list>
+        /// </remarks>
         public async Task StartAsync(IPAddress ip, int port = 5000)
         {
             _host = Host.CreateDefaultBuilder()

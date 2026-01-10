@@ -8,6 +8,9 @@ using WeatherStation.WeatherData.InfoClimat;
 
 namespace WeatherStation.UserControls
 {
+
+    #region Internal Converters
+
     /// <summary>
     /// Value converter for image height in WPF bindings.
     /// This converter returns the original value if it is less than or equal to 100,
@@ -48,6 +51,47 @@ namespace WeatherStation.UserControls
         }
     }
 
+
+    /// <summary>
+    /// Value converter for displaying a <see cref="TimeOnly"/> value as a formatted string with hours and minutes (e.g., "14:05").
+    /// This converter is intended for use in WPF bindings, such as displaying the time in a <see cref="TextBlock"/>.
+    /// </summary>
+    public class TimeOnlyToHourMinuteConverter : IValueConverter
+    {
+        /// <summary>
+        /// Converts a <see cref="TimeOnly"/> value to a string in "HH:mm" format.
+        /// </summary>
+        /// <param name="value">The value to convert, expected to be a <see cref="TimeOnly"/> or nullable <see cref="TimeOnly"/>.</param>
+        /// <param name="targetType">The target type of the binding (not used).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter (not used).</param>
+        /// <returns>
+        /// A string representing the time in "HH:mm" format, or an empty string if the value is null or not a <see cref="TimeOnly"/>.
+        /// </returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is TimeOnly time)
+            {
+                return time.ToString("HH:mm");
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Not implemented. Throws a <see cref="NotImplementedException"/> if called.
+        /// </summary>
+        /// <param name="value">The value produced by the binding target (not used).</param>
+        /// <param name="targetType">The type to convert to (not used).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter (not used).</param>
+        /// <returns>None. Always throws an exception.</returns>
+        /// <exception cref="NotImplementedException">Always thrown when this method is called.</exception>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 
     public class BaseWeatherCard : UserControl
     {
@@ -241,13 +285,117 @@ namespace WeatherStation.UserControls
             get { return (ImageSource)GetValue(RainImageSrcProperty); }
             set { SetValue(RainImageSrcProperty, value); }
         }
+
+
+        /// <summary>
+        /// Dependency property for the <see cref="WindImageSrc"/> property.
+        /// Represents the image source for the weather condition icon displayed in the weather card.
+        /// </summary>
+        protected static readonly DependencyProperty WindImageSrcProperty = DependencyProperty.Register(
+            "WindImageSrc",
+            typeof(ImageSource),
+            typeof(BaseWeatherCard),
+            new FrameworkPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the image source for the wind condition icon.
+        /// This property is a dependency property used internally to bind the wind icon to the control.
+        /// The image is typically selected based on wind conditions and retrieved from application resources.
+        /// </summary>
+        protected ImageSource WindImageSrc
+        {
+            get { return (ImageSource)GetValue(WindImageSrcProperty); }
+            set { SetValue(WindImageSrcProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for the <see cref="WindOrientation"/> property.
+        /// Represents the orientation of the wind, typically as an angle in degrees, displayed in the weather card.
+        /// This property is used internally to bind the wind orientation value to the control.
+        /// The value is expected to be an integer corresponding to the wind direction.
+        /// </summary>
+        protected static readonly DependencyProperty WindOrientationProperty = DependencyProperty.Register(
+            "WindOrientation",
+            typeof(int),
+            typeof(BaseWeatherCard),
+            new FrameworkPropertyMetadata(0));
+
+        /// <summary>
+        /// Gets or sets the orientation of the wind, typically as an angle in degrees, for the weather card.
+        /// This property is a dependency property used internally to bind the wind orientation value to the control.
+        /// The value is expected to be an integer corresponding to the wind direction.
+        /// </summary>
+        protected int WindOrientation
+        {
+            get { return (int)GetValue(WindOrientationProperty); }
+            set { SetValue(WindOrientationProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for the <see cref="WindColor"/> property.
+        /// Represents the brush used to display the wind color in the weather card.
+        /// This property is used internally to bind the wind color to the control,
+        /// allowing dynamic color changes based on wind speed or other criteria.
+        /// The default value is set to <see cref="Brushes.Blue"/>.
+        /// </summary>
+        protected static readonly DependencyProperty WindColorProperty = DependencyProperty.Register(
+            "WindColor",
+            typeof(Brush),
+            typeof(BaseWeatherCard),
+            new FrameworkPropertyMetadata(Brushes.Blue));
+
+        /// <summary>
+        /// Gets or sets the brush used to display the wind color in the weather card.
+        /// This property is a dependency property used internally to bind the wind color to the control,
+        /// allowing dynamic color changes based on wind speed or other criteria.
+        /// The default value is set to <see cref="Brushes.Blue"/>.
+        /// </summary>
+        protected Brush WindColor
+        {
+            get { return (Brush)GetValue(WindColorProperty); }
+            set { SetValue(WindColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for the <see cref="ForcastTime"/> property.
+        /// Represents the specific time of the forecast displayed in the weather card.
+        /// This property is used to store and retrieve the time at which the forecast data applies,
+        /// allowing the card to display weather information for a particular hour of the day.
+        /// </summary>
+        protected static readonly DependencyProperty ForcastTimeProperty = DependencyProperty.Register(
+            "ForcastTime",
+            typeof(TimeOnly?),
+            typeof(BaseWeatherCard),
+            new FrameworkPropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the specific time of the forecast displayed in the weather card.
+        /// This property is a dependency property that represents the hour at which the forecast data applies.
+        /// It is nullable to allow scenarios where no specific time has been set or retrieved.
+        /// The value is typically set when updating the card with forecast data for a particular time of day.
+        /// </summary>
+        /// <value>
+        /// A nullable <see cref="TimeOnly"/> representing the forecast time, or null if no time has been specified.
+        /// </value>
+        public TimeOnly? ForcastTime
+        {
+            get { return (TimeOnly?)GetValue(ForcastTimeProperty); }
+            set { SetValue(ForcastTimeProperty, value); }
+        }
         #endregion
 
+        /// <summary>
+        /// Updates the weather card with a new <see cref="InfoClimatManager"/> instance.
+        /// This method assigns the provided <paramref name="infoClimat"/> to the <see cref="InfoClimat"/> property,
+        /// then calls <see cref="UpdateCard()"/> to refresh the card's display with the latest weather data.
+        /// </summary>
+        /// <param name="infoClimat">
+        /// The <see cref="InfoClimatManager"/> instance containing the weather data to be displayed.
+        /// </param>
         public void UpdateCard(InfoClimatManager infoClimat)
         {
             InfoClimat = infoClimat;
             UpdateCard();
-
         }
 
         /// <summary>
@@ -260,6 +408,7 @@ namespace WeatherStation.UserControls
                 SetDayTemperature(InfoClimat);
                 ForecastData? forecast;
                 var hourOffset = 0;
+                var forecastHour = ForcastTime is not null ? (InfoClimatManager.Hour)ForcastTime.Value.Hour : InfoClimatManager.Hour.Fourteen;
                 /// <summary>
                 /// Attempts to retrieve the weather forecast for the specified date and time, starting from 14:00 (Hour.Fourteen).
                 /// If no forecast is found at 14:00, the method alternates by incrementally searching later and earlier hours,
@@ -268,25 +417,28 @@ namespace WeatherStation.UserControls
                 /// </summary>
                 do
                 {
-                    forecast = InfoClimat.GetForecast(ForecastDate, InfoClimatManager.Hour.Fourteen + hourOffset);
+                    forecast = InfoClimat.GetForecast(ForecastDate, forecastHour + hourOffset);
                     if (forecast is null && hourOffset != 0)
                     {
-                        forecast = InfoClimat.GetForecast(ForecastDate, InfoClimatManager.Hour.Fourteen - hourOffset);
+                        forecast = InfoClimat.GetForecast(ForecastDate, forecastHour - hourOffset);
                     }
                     hourOffset++;
                 } while (forecast is null && hourOffset <= 10);
 
                 if (forecast is object)
                 {
+                    ForcastTime = TimeOnly.FromDateTime(DateTime.Parse(forecast.DateString));
                     CloudinessText = GetCloudinessText(forecast.Cloudiness!.Total);
                     DayName = ForecastDate.GetDayOfWeek(CultureInfo.CurrentCulture);
                     FormattedDate = ForecastDate.ToString("d MMM", CultureInfo.CurrentCulture);
                     SunImageSrc = (ImageSource)Application.Current.Resources[GetCloudinessImageName(forecast.Cloudiness!.Total)];
                     RainImageSrc = (ImageSource)Application.Current.Resources[GetRainImageName(forecast.Rain)];
+                    WindImageSrc = (ImageSource)Application.Current.Resources[GetWindImageName()];
+                    WindOrientation = Convert.ToInt32(forecast?.WindDirection?.At10m ?? 0);
+                    WindColor = GetWindColor(forecast?.WindAverage?.At10m ?? 0);
                 }
             }
         }
-
 
         /// <summary>
         /// Converts a cloudiness value into a textual description based on predefined thresholds.
@@ -351,6 +503,79 @@ namespace WeatherStation.UserControls
                 >= 0.2 and < 2 => "imgLightRain",
                 _ => "imgNoRain"
             };
+        }
+
+        /// <summary>
+        /// Returns the resource name of the wind icon to be displayed in the weather card.
+        /// This method always returns the name of the corresponds to the wind image resource
+        /// used in the application's resources for representing wind conditions.
+        /// </summary>
+        protected static string GetWindImageName()
+        {
+            return "imgWind";
+        }
+
+        /// <summary>
+        /// Returns a <see cref="Brush"/> representing the wind color based on the provided wind speed in kilometers per hour.
+        /// The color is interpolated according to the following ranges:
+        /// - 0 to 10 km/h: White to Yellow
+        /// - 10 to 30 km/h: Yellow to Orange
+        /// - 30 to 60 km/h: Orange to Red
+        /// - Above 60 km/h: Red
+        /// The method uses linear interpolation between the color ranges to provide a smooth gradient effect.
+        /// </summary>
+        /// <param name="windSpeedKmH">
+        /// The wind speed in kilometers per hour.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SolidColorBrush"/> with the color corresponding to the wind speed.
+        /// </returns>
+        public static Brush GetWindColor(double windSpeedKmH)
+        {
+            var (r, g, b) = windSpeedKmH switch
+            {
+                <= 10 => InterpolateWindColor(windSpeedKmH, 0, 10, (255, 255, 255), (255, 255, 0)),   // White -> Yellow
+                <= 30 => InterpolateWindColor(windSpeedKmH, 10, 30, (255, 255, 0), (255, 165, 0)),    // Yellow -> Orange
+                <= 60 => InterpolateWindColor(windSpeedKmH, 30, 60, (255, 165, 0), (255, 0, 0)),      // Orange -> Red
+                _ => (255, 0, 0)                                                                      // Red
+            };
+            return new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
+        }
+
+        /// <summary>
+        /// Performs a linear interpolation between two RGB color values based on the specified value and range.
+        /// This method is used to calculate an intermediate color for wind speed visualization,
+        /// providing a smooth gradient between the start and end colors according to the wind speed.
+        /// </summary>
+        /// <param name="valeur">
+        /// The value for which the color interpolation is performed, typically representing wind speed.
+        /// </param>
+        /// <param name="min">
+        /// The minimum value of the interpolation range.
+        /// </param>
+        /// <param name="max">
+        /// The maximum value of the interpolation range.
+        /// </param>
+        /// <param name="startColor">
+        /// The RGB color tuple representing the start color of the interpolation range.
+        /// </param>
+        /// <param name="endColor">
+        /// The RGB color tuple representing the end color of the interpolation range.
+        /// </param>
+        /// <returns>
+        /// A tuple containing the interpolated RGB color values as bytes.
+        /// </returns>
+        private static (byte r, byte g, byte b) InterpolateWindColor(double valeur, double min, double max,
+                                                (byte r, byte g, byte b) startColor,
+                                                (byte r, byte g, byte b) endColor)
+        {
+            double ratio = (valeur - min) / (max - min);
+
+            byte r = (byte)(startColor.r + ratio * (endColor.r - startColor.r));
+            byte g = (byte)(startColor.g + ratio * (endColor.g - startColor.g));
+            byte b = (byte)(startColor.b + ratio * (endColor.b - startColor.b));
+
+            return (r, g, b);
         }
 
         /// <summary>

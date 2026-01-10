@@ -31,7 +31,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="30" />
-                <RowDefinition Height="360" />
+                <RowDefinition Height="340" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -47,8 +47,9 @@
                 Grid.Column="0"
                 Margin="1"
                 VerticalAlignment="Stretch">
+
                 <StackPanel
-                    Height="40"
+                    Height="45"
                     Background="{StaticResource BrushSensorZoneLinearGradient}"
                     DockPanel.Dock="Bottom"
                     Orientation="Horizontal">
@@ -73,11 +74,20 @@
                     </StackPanel>
                     <Image
                         x:Name="ImageApiWarning"
-                        Width="40"
-                        Height="40"
+                        Width="45"
                         Margin="20,0,0,0"
                         VerticalAlignment="Center"
                         Source="{StaticResource imgWarning}" />
+                    <Image
+                        x:Name="ImageAppExit"
+                        Width="45"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center"
+                        Cursor="Hand"
+                        IsEnabled="False"
+                        MouseLeftButtonUp="ImageAppExit_MouseLeftButtonUp"
+                        Source="{StaticResource imgExit}" />
+
                 </StackPanel>
 
                 <uc:SensorDisplay
@@ -109,7 +119,7 @@
                 Background="{StaticResource BrushSensorZoneLinearGradient}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
-                    <RowDefinition Height="10" />
+                    <RowDefinition Height="20" />
                     <RowDefinition Height="45" />
                     <RowDefinition Height="10" />
                     <RowDefinition Height="45" />
@@ -202,9 +212,9 @@
 
                     <Image
                         x:Name="ImageSaintOfTheDay"
+                        Grid.Column="0"
                         Width="40"
                         Height="40"
-                        Grid.Column="0"
                         Source="{StaticResource imgSaintOfTheDay}" />
 
                     <TextBlock

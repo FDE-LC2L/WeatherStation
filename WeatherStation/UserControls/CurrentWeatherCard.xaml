@@ -11,6 +11,10 @@
     Background="{StaticResource BrushSensorZoneLinearGradient}"
     mc:Ignorable="d">
 
+    <local:BaseWeatherCard.Resources>
+        <local:TimeOnlyToHourMinuteConverter x:Key="TimeOnlyToHourMinuteConverter" />
+    </local:BaseWeatherCard.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
@@ -25,6 +29,31 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
+
+
+        <Rectangle
+            x:Name="WindPicto"
+            Grid.Row="1"
+            Width="50"
+            Height="50"
+            Margin="15,-20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Fill="{Binding ElementName=ThisCurrentWeatherCard, Path=WindColor}"
+            RenderTransformOrigin="0.5, 0.5">
+            <Rectangle.OpacityMask>
+                <ImageBrush ImageSource="{Binding ElementName=ThisCurrentWeatherCard, Path=WindImageSrc}" />
+            </Rectangle.OpacityMask>
+            <Rectangle.RenderTransform>
+                <RotateTransform Angle="{Binding ElementName=ThisCurrentWeatherCard, Path=WindOrientation}" />
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <TextBlock
+            x:Name="TextBlockForecastTime"
+            Margin="5,0"
+            FontWeight="Bold"
+            Text="{Binding ElementName=ThisCurrentWeatherCard, Path=ForcastTime, Converter={StaticResource TimeOnlyToHourMinuteConverter}}" />
 
         <Image
             x:Name="ImagePicto"

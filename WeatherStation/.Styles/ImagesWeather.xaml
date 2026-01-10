@@ -14,6 +14,8 @@
     <ImageSource x:Key="imgHeavyRain">\.Assets\Weather\light_rain.png</ImageSource>
     <ImageSource x:Key="imgVeryHeavyRain">\.Assets\Weather\hard_rain.png</ImageSource>
 
+    <ImageSource x:Key="imgWind">\.Assets\Weather\arrow-64x64.png</ImageSource>
+
 
 
 </ResourceDictionary>

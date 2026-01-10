@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <ImageSource x:Key="imgSearch">\.Assets\Images\search-256x256.png</ImageSource>
-    <ImageSource x:Key="imgCancel">\.Assets\Images\cancel_flat-256x256.png</ImageSource>
-    <ImageSource x:Key="imgTools">\.Assets\Images\tools-256x256.png</ImageSource>
-    <ImageSource x:Key="imgOk">\.Assets\Images\check-256x256.png</ImageSource>
-    <ImageSource x:Key="imgSunriseSunset">\.Assets\Images\sun-256x256.png</ImageSource>
-    <ImageSource x:Key="imgMoonriseMoonset">\.Assets\Images\half-moon-256x256.png</ImageSource>
+    <ImageSource x:Key="imgSearch">/.Assets/Images/search-256x256.png</ImageSource>
+    <ImageSource x:Key="imgCancel">/.Assets/Images/cancel_flat-256x256.png</ImageSource>
+    <ImageSource x:Key="imgTools">/.Assets/Images/tools-256x256.png</ImageSource>
+    <ImageSource x:Key="imgOk">/.Assets/Images/check-256x256.png</ImageSource>
+    <ImageSource x:Key="imgSunriseSunset">/.Assets/Images/sun-256x256.png</ImageSource>
+    <ImageSource x:Key="imgMoonriseMoonset">/.Assets/Images/half-moon-256x256.png</ImageSource>
     <ImageSource x:Key="imgSaintOfTheDay">/.Assets/Images/fete-256x256.png</ImageSource>
     <ImageSource x:Key="imgWarning">/.Assets/Images/warning-256x256.png</ImageSource>
+    <ImageSource x:Key="imgExit">/.Assets/Images/exit-256x256.png</ImageSource>
 
 
 

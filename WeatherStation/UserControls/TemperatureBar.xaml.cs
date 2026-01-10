@@ -150,7 +150,22 @@ namespace WeatherStation.UserControls
         public double?[] Values
         {
             get { return (double?[])GetValue(ValuesProperty); }
-            set { SetValue(ValuesProperty, value); }
+            set { SetValue(ValuesProperty, AddExtrapolatedValues(value)); }
+        }
+
+        private double?[] AddExtrapolatedValues(double?[] values)
+        {
+            var list = new List<double?>();
+            for (var i = 0; i < values.Length; i++)
+            {
+                list.Add(values[i]);
+                if (i < values.Length - 1)
+                {
+                    var expolatedValue = (values[i] + values[i + 1]) / 2;
+                    list.Add(expolatedValue);
+                }
+            }
+            return list.ToArray();
         }
 
 

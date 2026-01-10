@@ -1,4 +1,8 @@
-﻿using AppCommon.Helpers;
+﻿//Enable this directive to activate the embedded HTTP server for external sensors
+//#define EnableSensorWebServer
+
+using AppCommon.Extension;
+using AppCommon.Helpers;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.Versioning;
@@ -11,6 +15,7 @@ using WeatherStation.RemoteData.IPGeolocation;
 using WeatherStation.RemoteData.NominisCef;
 using WeatherStation.WeatherData.InfoClimat;
 using WeatherStation.Windows;
+
 
 namespace WeatherStation
 {
@@ -44,6 +49,10 @@ namespace WeatherStation
         {
             _apiError = new HttpStatusCode?[3] { HttpStatusCode.NotFound, HttpStatusCode.NotFound, HttpStatusCode.NotFound };
             InitializeComponent();
+            ImageAppExit.Enabled = false;
+#if RELEASE
+            WindowStyle = WindowStyle.None;
+#endif
             // Create and configure the forecast timer with the interval until the next forecast update slot
             _timerForecast = new DispatcherTimer
             {
@@ -64,6 +73,7 @@ namespace WeatherStation
         protected override void FirstInit()
         {
             base.FirstInit();
+#if EnableSensorWebServer
             _apiServer = new RestApiServer();
             _apiServer.SensorDataReceived += (sender, data) =>
             {
@@ -72,6 +82,7 @@ namespace WeatherStation
                     SensorDisplayMain.SensorDataList.UpdateSensor(data);
                 });
             };
+#endif
             _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
             TemperatureBarCurrentDay.MinTemp = -5;
             TemperatureBarCurrentDay.MaxTemp = 30;
@@ -80,12 +91,15 @@ namespace WeatherStation
         protected override void DelayedFirstInit()
         {
             base.DelayedFirstInit();
+#if EnableSensorWebServer
             SearchNetworkInterfaces();
+#endif
             _timerForecast.Start();
             _timerClock.Start();
             _ = UpdateData();
             SetComponents();
             TemperatureBarCurrentDay.Values = [-5, 30, -5, 30, -5, 30, -5, 30];
+            ImageAppExit.Enabled = true;
         }
 
 
@@ -94,13 +108,13 @@ namespace WeatherStation
             base.SetComponents();
             TextBlockCurrentTime.Text = _currentTimeString;
             TextBlockCurrentCity.Text = !string.IsNullOrWhiteSpace(_currentCity?.FormattedName) ? _currentCity?.FormattedName : "No city selected";
-            TextBlockCurrentCoordinates.Text = _currentCity is object ? $"{_currentCity.Center.coordinates[1].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}, {_currentCity.Center.coordinates[0].ToString("F6", System.Globalization.CultureInfo.InvariantCulture)}" : string.Empty;
+            TextBlockCurrentCoordinates.Text = _currentCity is object ? $"{_currentCity.Center.coordinates[1].ToString("F4", System.Globalization.CultureInfo.InvariantCulture)}, {_currentCity.Center.coordinates[0].ToString("F4", System.Globalization.CultureInfo.InvariantCulture)}" : string.Empty;
             TextBlockSunrise.Text = _sunrise;
             TextBlockSunset.Text = _sunset;
             TextBlockMoonset.Text = _moonset;
             TextBlockMoonrise.Text = _moonrise;
             TextBlockSaintOfTheDay.Text = _saintOfTheDay;
-            ImageApiWarning.Visibility = _apiError.Any(x => x is not null) ? Visibility.Visible : Visibility.Collapsed;
+            ImageApiWarning.Visibility = _apiError.Any(x => x is not null) ? Visibility.Visible : Visibility.Hidden;
         }
 
 
@@ -213,6 +227,7 @@ namespace WeatherStation
             var infoClimatManager = new InfoClimatManager(city);
             await infoClimatManager.LoadInfoClimatDataAsync(_apiError);
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
+            CurrentWeatherCard.ForcastTime = TimeOnly.FromDateTime(DateTime.Now);
             CurrentWeatherCard.UpdateCard(infoClimatManager);
             var dayForecasts = infoClimatManager.GetForecastsForDay(DateOnly.FromDateTime(DateTime.Now));
             for (var i = 1; i <= 4; i++)
@@ -255,17 +270,22 @@ namespace WeatherStation
             if (city is null) { return; }
             var ephemeris = new Ephemeris(city);
             var ephemerisData = await ephemeris.LoadEphemerisDataAsync(_apiError);
-            _sunrise = ephemerisData?.Sunrise ?? "Sunrise";
-            _sunset = ephemerisData?.Sunset ?? "Sunset";
-            _moonrise = ephemerisData?.Moonset ?? "Moonrise";
-            _moonset = ephemerisData?.Moonrise ?? "Moonset";
+            if (ephemerisData is object)
+            {
+                _sunrise = ephemerisData.Sunrise ?? "Sunrise";
+                _sunset = ephemerisData.Sunset ?? "Sunset";
+                _moonrise = ephemerisData.Moonset ?? "Moonrise";
+                _moonset = ephemerisData.Moonrise ?? "Moonset";
+            }
         }
 
         private async Task UpdateNominis()
         {
-            var nominis = new Nominis();
             var nominisData = await Nominis.LoadNominisDataAsync(_apiError);
-            _saintOfTheDay = nominisData?.Response?.SaintOfTheDay?.Name ?? "SaintOfTheDay";
+            if (nominisData is object)
+            {
+                _saintOfTheDay = nominisData.Response?.SaintOfTheDay?.Name ?? "SaintOfTheDay";
+            }
         }
 
         /// <summary>
@@ -2505,6 +2525,11 @@ namespace WeatherStation
                 FileName = "https://www.infoclimat.fr/",
                 UseShellExecute = true
             });
+        }
+
+        private void ImageAppExit_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Close();
         }
         #endregion
     }

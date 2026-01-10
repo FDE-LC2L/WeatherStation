@@ -192,4 +192,6 @@ namespace WeatherStation.Converters
             return (bool)value ? Visibility.Visible : Visibility.Hidden;
         }
     }
+
+
 }
