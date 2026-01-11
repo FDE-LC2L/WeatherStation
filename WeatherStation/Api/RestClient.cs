@@ -6,10 +6,6 @@ namespace WeatherStation.Api
     public class RestClient
     {
         #region Fields
-        //const string InfoClimatApiKeyTst = "AxkCFVIsUHJWe1BnAHYAKVQ8BjMIflRzAX0HZAtuVyoAa1c2AGBRN1A%2BWyZTfAcxVntTMAA7VWVWPQB4D30DYgNpAm5SOVA3VjlQNQAvACtUegZnCChUcwFjB2gLY1cqAGJXOwBmUS1QN1snU2IHNVZhUywAIFVsVjIAYQ9lA2YDZAJkUjhQMlYwUC0ALwAyVG4GYwhkVG0BZQdhCzJXPAA3V2IAalE3UDZbJ1NjBztWY1M6ADhVZFYyAG4PfQN%2FAxkCFVIsUHJWe1BnAHYAKVQyBjgIYw%3D%3D&_c=75c1eb39c62a66a007cf0c09bfaa2057";
-        //const string InfoClimatApiUrlTst = $"http://www.infoclimat.fr/public-api/gfs/json?_ll=43.863485,-0.702268&_auth={InfoClimatApiKey}";
-
-
         private readonly HttpClient _httpClient;
         private readonly AppSettingsManager appSettingsManager = AppSettingsManager.Instance;
         #endregion
