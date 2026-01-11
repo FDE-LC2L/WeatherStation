@@ -453,10 +453,10 @@ namespace WeatherStation.UserControls
         {
             return cloudinessValue switch
             {
-                >= 80 => AppResx.Cloudiness_FullyCovered,
-                >= 50 and < 80 => AppResx.Cloudiness_Covered,
-                >= 25 and < 50 => AppResx.Cloudiness_Cloudy,
-                >= 15 and < 25 => AppResx.Cloudiness_LittleCovered,
+                >= 90 => AppResx.Cloudiness_FullyCovered,
+                >= 55 and < 90 => AppResx.Cloudiness_Covered,
+                >= 30 and < 55 => AppResx.Cloudiness_Cloudy,
+                >= 15 and < 30 => AppResx.Cloudiness_LittleCovered,
                 _ => AppResx.Cloudiness_Sunny
             };
         }
@@ -475,10 +475,10 @@ namespace WeatherStation.UserControls
         {
             return cloudinessValue switch
             {
-                >= 80 => "imgHardCloudy",
-                >= 50 and < 80 => "imgCloudy",
-                >= 25 and < 50 => "imgPartlyCloudy",
-                >= 15 and < 25 => "imgMostlySunny",
+                >= 90 => "imgHardCloudy",
+                >= 55 and < 90 => "imgCloudy",
+                >= 30 and < 55 => "imgPartlyCloudy",
+                >= 15 and < 30 => "imgMostlySunny",
                 _ => "imgClearDay"
             };
         }

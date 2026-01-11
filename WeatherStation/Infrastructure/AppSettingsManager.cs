@@ -60,6 +60,7 @@ namespace WeatherStation.Infrastructure
         public string Copyright { get; private set; } = string.Empty;
         public string Product { get; private set; } = string.Empty;
         public string AppTitle { get; private set; } = string.Empty;
+        public string AssemblyVersion { get; private set; } = string.Empty;
         public string FileVersion { get; private set; } = string.Empty;
         public string AppConfiguration { get; private set; } = string.Empty;
         public string InfoClimatApiKey { get; private set; } = string.Empty;
@@ -78,6 +79,7 @@ namespace WeatherStation.Infrastructure
         {
             CustomAttributeData? attribute;
             var customAttributes = assembly.CustomAttributes;
+            AssemblyVersion = assembly.GetName().Version?.ToString() ?? string.Empty;
             attribute = customAttributes.FirstOrDefault(ca => ca.AttributeType.Equals(typeof(AssemblyCompanyAttribute)));
             if (attribute is object)
             {

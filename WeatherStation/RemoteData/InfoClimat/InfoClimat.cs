@@ -58,16 +58,15 @@ namespace WeatherStation.WeatherData.InfoClimat
         /// If the deserialized response contains valid forecast data, it is stored in the private <c>_weatherResponse</c> field.
         /// </summary>
         /// <remarks>
-        /// This method uses the <see cref="RestApiClient"/> to retrieve weather data in JSON format.
+        /// This method uses the <see cref="RestClient"/> to retrieve weather data in JSON format.
         /// The JSON is then deserialized into a <see cref="WeatherResponse"/> instance.
         /// If the response contains forecasts, the internal state is updated accordingly.
         /// </remarks>
-        public async Task LoadInfoClimatDataAsync(HttpStatusCode?[] apiError)
+        public async Task LoadInfoClimatDataAsync(RestClient clientApi, HttpStatusCode?[] apiError)
         {
             try
             {
-                var apiClient = new RestApiClient();
-                var json = await apiClient.GetInfoClimatWheatherDataAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
+                var json = await clientApi.GetInfoClimatWheatherDataAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
                 var response = JsonSerializer.Deserialize<WeatherResponse>(json);
                 if (response?.Forecasts is object)
                 {
@@ -79,6 +78,13 @@ namespace WeatherStation.WeatherData.InfoClimat
             {
                 Console.WriteLine($"Error loading InfoClimat data: {ex.Message}");
                 apiError[0] = ex.StatusCode; // Indicate an error occurred
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error loading InfoClimat data: {ex.Message}");
+                apiError[0] = HttpStatusCode.InternalServerError; // Indicate an unexpected error occurred
+                throw;
             }
         }
 

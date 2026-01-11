@@ -8,7 +8,7 @@ namespace WeatherStation
     public partial class App : Application
     {
         /*
-        private RestApiServer _apiServer = new RestApiServer();
+        private RestServer _apiServer = new RestServer();
 
         protected override async void OnStartup(StartupEventArgs e)
         {

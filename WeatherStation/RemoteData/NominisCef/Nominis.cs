@@ -29,14 +29,13 @@ namespace WeatherStation.RemoteData.NominisCef
         /// This method ensures that the Nominis API is not called more than once per day.
         /// If the API call fails, the error is logged to the console and the error code is set in the <paramref name="apiError"/> array.
         /// </remarks>
-        public static async Task<DailyNominis?> LoadNominisDataAsync(HttpStatusCode?[] apiError)
+        public static async Task<DailyNominis?> LoadNominisDataAsync(RestClient clientApi, HttpStatusCode?[] apiError)
         {
             if (_lastCallDate is null || _lastCallDate < DateOnly.FromDateTime(DateTime.Now))
             {
                 try
                 {
-                    var apiClient = new RestApiClient();
-                    var json = await apiClient.GetNominisAsync(DateOnly.FromDateTime(DateTime.Now));
+                    var json = await clientApi.GetNominisAsync(DateOnly.FromDateTime(DateTime.Now));
                     var response = JsonSerializer.Deserialize<DailyNominis>(json);
                     _lastCallDate = DateOnly.FromDateTime(DateTime.Now);
                     apiError[2] = null;
@@ -47,7 +46,14 @@ namespace WeatherStation.RemoteData.NominisCef
                     Console.WriteLine($"Error fetching nominis data: {ex.Message}");
                     apiError[2] = ex.StatusCode;
                     _lastCallDate = null;
-                    return null;
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Unexpected error fetching nominis data: {ex.Message}");
+                    apiError[2] = HttpStatusCode.InternalServerError;
+                    _lastCallDate = null;
+                    throw;
                 }
             }
             return null;

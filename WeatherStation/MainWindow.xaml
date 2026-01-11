@@ -17,12 +17,47 @@
 
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="0" />
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <Label
+                    Name="LabelLocalAppVersion"
+                    HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="1">
                 <Label
                     Name="LabelLocalIp"
                     HorizontalAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="2">
+                <Label
+                    Name="LabelLog"
+                    HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="3">
+                <Label
+                    Name="LabelError"
+                    HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Error"
+                    FontWeight="Bold"
+                    Foreground="Red" />
             </StatusBarItem>
         </StatusBar>
 

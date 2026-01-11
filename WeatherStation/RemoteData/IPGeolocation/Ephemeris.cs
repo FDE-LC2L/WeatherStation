@@ -33,14 +33,13 @@ namespace WeatherStation.RemoteData.IPGeolocation
         /// A <see cref="DailyEphemeris"/> object containing the ephemeris data if the request is successful and
         /// the data has not already been fetched for the current day; otherwise, <c>null</c>.
         /// </returns>
-        public async Task<DailyEphemeris?> LoadEphemerisDataAsync(System.Net.HttpStatusCode?[] apiError)
+        public async Task<DailyEphemeris?> LoadEphemerisDataAsync(RestClient clientApi, System.Net.HttpStatusCode?[] apiError)
         {
-            if (_lastCallDate is null || _lastCallDate < DateOnly.FromDateTime(DateTime.Now))
+            if (true || _lastCallDate is null || _lastCallDate < DateOnly.FromDateTime(DateTime.Now))
             {
                 try
                 {
-                    var apiClient = new RestApiClient();
-                    var json = await apiClient.GetEphemerisAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
+                    var json = await clientApi.GetEphemerisAsync(_city.Center.coordinates[1], _city.Center.coordinates[0]);
                     var response = JsonSerializer.Deserialize<DailyEphemeris>(json);
                     _lastCallDate = DateOnly.FromDateTime(DateTime.Now);
                     apiError[1] = null;
@@ -51,7 +50,14 @@ namespace WeatherStation.RemoteData.IPGeolocation
                     Console.WriteLine($"Error fetching ephemeris data: {ex.Message}");
                     apiError[1] = ex.StatusCode;
                     _lastCallDate = null;
-                    return null;
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Unexpected error loading Ephemeris data: {ex.Message}");
+                    apiError[1] = System.Net.HttpStatusCode.InternalServerError;
+                    _lastCallDate = null;
+                    throw;
                 }
             }
             return null;

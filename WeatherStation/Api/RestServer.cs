@@ -22,7 +22,7 @@ namespace WeatherStation.Api
     /// The server can be started on a specific IP address and port, and notifies subscribers through the 
     /// <see cref="SensorDataReceived"/> event when new sensor data is received.
     /// </remarks>
-    public class RestApiServer
+    public class RestServer
     {
         #region Fields
         public EventHandler<SensorData>? SensorDataReceived;

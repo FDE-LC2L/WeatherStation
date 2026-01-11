@@ -133,7 +133,7 @@
     <value>Totalement couvert</value>
   </data>
   <data name="Cloudiness_LittleCovered" xml:space="preserve">
-    <value>Peu couvert</value>
+    <value>Quelques nuages</value>
   </data>
   <data name="Cloudiness_Sunny" xml:space="preserve">
     <value>Ensoleillé</value>

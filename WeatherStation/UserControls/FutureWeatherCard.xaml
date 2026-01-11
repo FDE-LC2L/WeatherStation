@@ -60,7 +60,7 @@
             Margin="10,-30"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Fill="{Binding ElementName=ThisFutureWeatherCard, Path=WindColor}" 
+            Fill="{Binding ElementName=ThisFutureWeatherCard, Path=WindColor}"
             RenderTransformOrigin="0.5, 0.5">
             <Rectangle.OpacityMask>
                 <ImageBrush ImageSource="{Binding ElementName=ThisFutureWeatherCard, Path=WindImageSrc}" />
@@ -74,7 +74,7 @@
             x:Name="SunPicto"
             Grid.Row="1"
             Source="{Binding ElementName=ThisFutureWeatherCard, Path=SunImageSrc}" />
-        
+
         <Image
             x:Name="RainPicto"
             Grid.Row="1"

@@ -106,7 +106,7 @@ namespace WeatherStation.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Peu couvert.
+        ///   Recherche une chaîne localisée semblable à Quelques nuages.
         /// </summary>
         public static string Cloudiness_LittleCovered {
             get {

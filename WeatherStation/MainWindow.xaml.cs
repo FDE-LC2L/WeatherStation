@@ -5,6 +5,7 @@ using AppCommon.Extension;
 using AppCommon.Helpers;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Threading;
@@ -24,7 +25,8 @@ namespace WeatherStation
     {
         #region Fields
         private const int ForecastUpdateIntervalMinutes = 30;
-        private RestApiServer _apiServer = null!;
+        private RestServer _apiServer = null!;
+        private readonly HttpClient _httpClient;
         private readonly DispatcherTimer _timerForecast;
         private readonly DispatcherTimer _timerClock;
         private City? _currentCity = null;
@@ -47,6 +49,14 @@ namespace WeatherStation
         /// </summary>
         public MainWindow()
         {
+            _httpClient = new HttpClient(new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(15),
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(35), // > 30min
+            })
+            {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
             _apiError = new HttpStatusCode?[3] { HttpStatusCode.NotFound, HttpStatusCode.NotFound, HttpStatusCode.NotFound };
             InitializeComponent();
             ImageAppExit.Enabled = false;
@@ -65,9 +75,7 @@ namespace WeatherStation
                 Interval = GetDelayToNextSlot(1)
             };
             _timerClock.Tick += TimerClock_Tick;
-
         }
-
         #endregion
 
         protected override void FirstInit()
@@ -86,6 +94,7 @@ namespace WeatherStation
             _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
             TemperatureBarCurrentDay.MinTemp = -5;
             TemperatureBarCurrentDay.MaxTemp = 30;
+            LabelLocalAppVersion.Content = $"{AppParameters.AssemblyVersion} {AppParameters.AppConfiguration}";
         }
 
         protected override void DelayedFirstInit()
@@ -118,13 +127,22 @@ namespace WeatherStation
         }
 
 
-
         private async Task UpdateData()
         {
-            await UpdateForecast(_currentCity);
-            await UpdateEphemeris(_currentCity);
-            await UpdateNominis();
-            SetComponents();
+            LabelError.Content = string.Empty;
+            try
+            {
+                var clientApi = new RestClient(_httpClient);
+                await UpdateForecast(clientApi, _currentCity);
+                await UpdateEphemeris(clientApi, _currentCity);
+                await UpdateNominis(clientApi);
+                SetComponents();
+                LabelLog.Content = $"Last update: {DateTime.Now:HH:mm:ss}";
+            }
+            catch (Exception ex)
+            {
+                LabelError.Content = $"{DateTime.Now:HH:mm:ss} : Error updating data: {ex.Message}";
+            }
         }
 
         /// <summary>
@@ -220,12 +238,12 @@ namespace WeatherStation
         /// This method is intended to be called periodically (e.g., by a timer) or on demand to refresh the weather data
         /// shown to the user. It ensures that all weather cards reflect the most recent forecast information.
         /// </remarks>
-        private async Task UpdateForecast(City? city)
+        private async Task UpdateForecast(RestClient clientApi, City? city)
         {
             if (city is null) { return; }
             var dayForecastCount = 0;
             var infoClimatManager = new InfoClimatManager(city);
-            await infoClimatManager.LoadInfoClimatDataAsync(_apiError);
+            await infoClimatManager.LoadInfoClimatDataAsync(clientApi, _apiError);
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
             CurrentWeatherCard.ForcastTime = TimeOnly.FromDateTime(DateTime.Now);
             CurrentWeatherCard.UpdateCard(infoClimatManager);
@@ -265,11 +283,11 @@ namespace WeatherStation
         }
 
 
-        private async Task UpdateEphemeris(City? city)
+        private async Task UpdateEphemeris(RestClient clientApi, City? city)
         {
             if (city is null) { return; }
             var ephemeris = new Ephemeris(city);
-            var ephemerisData = await ephemeris.LoadEphemerisDataAsync(_apiError);
+            var ephemerisData = await ephemeris.LoadEphemerisDataAsync(clientApi, _apiError);
             if (ephemerisData is object)
             {
                 _sunrise = ephemerisData.Sunrise ?? "Sunrise";
@@ -279,9 +297,9 @@ namespace WeatherStation
             }
         }
 
-        private async Task UpdateNominis()
+        private async Task UpdateNominis(RestClient clientApi)
         {
-            var nominisData = await Nominis.LoadNominisDataAsync(_apiError);
+            var nominisData = await Nominis.LoadNominisDataAsync(clientApi, _apiError);
             if (nominisData is object)
             {
                 _saintOfTheDay = nominisData.Response?.SaintOfTheDay?.Name ?? "SaintOfTheDay";
@@ -295,7 +313,7 @@ namespace WeatherStation
         /// </summary>
         private void ShowTools()
         {
-            var toolsWindow = new ToolsWindow(this, _currentCity);
+            var toolsWindow = new ToolsWindow(this, _httpClient, _currentCity);
             if (toolsWindow.ShowDialog() == true)
             {
                 _currentCity = toolsWindow.CurrentCity;

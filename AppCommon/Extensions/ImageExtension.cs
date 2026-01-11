@@ -23,12 +23,12 @@ namespace AppCommon.Extension
             public bool Enabled
             {
                 get => _enabledFlag.TryGetValue(image, out var value) && value;
-                set 
+                set
                 {
                     _enabledFlag[image] = value;
                     image.IsEnabled = value;
-                    image.Opacity = value ? 1d : 0.4d;                    
-                }                
+                    image.Opacity = value ? 1d : 0.4d;
+                }
             }
         }
 

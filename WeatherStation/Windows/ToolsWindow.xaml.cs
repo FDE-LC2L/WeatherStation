@@ -1,4 +1,5 @@
 ﻿using KeyPad;
+using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,11 +16,13 @@ namespace WeatherStation.Windows
     {
         #region Fields
         public City? CurrentCity { get; set; }
+        private readonly HttpClient _httpClient;
         #endregion
 
         #region Ctor
-        public ToolsWindow(Window owner, City? currentCity) : base(owner)
+        public ToolsWindow(Window owner, HttpClient httpClient, City? currentCity) : base(owner)
         {
+            _httpClient = httpClient;
             InitializeComponent();
             TextBlockWindowTitle.Text = AppResx.AppParameters.ToUpperInvariant();
             TextBoxPostalCode.Text = AppParameters.Settings.LastUsedPostalCode;
@@ -54,7 +57,7 @@ namespace WeatherStation.Windows
         private async Task SearchByPostalCode(string postalCode)
         {
             AppParameters.Settings.LastUsedPostalCode = postalCode;
-            var apiClient = new RestApiClient();
+            var apiClient = new RestClient(_httpClient);
             var json = await apiClient.GetInfoCommunesAsync(postalCode);
             var cities = JsonSerializer.Deserialize<List<City>>(json);
             if (cities is object)
