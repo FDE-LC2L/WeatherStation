@@ -92,7 +92,7 @@ namespace WeatherStation
             };
 #endif
             _currentCity = AppParameters.Settings.CurrentCity ?? City.GetDefaultCity();
-            TemperatureBarCurrentDay.MinTemp = -5;
+            TemperatureBarCurrentDay.MinTemp = -3;
             TemperatureBarCurrentDay.MaxTemp = 30;
             LabelLocalAppVersion.Content = $"{AppParameters.AssemblyVersion} {AppParameters.AppConfiguration}";
         }

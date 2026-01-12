@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x86;x64</Platforms>
-    <AssemblyVersion>2026.1.0.5</AssemblyVersion>
-    <FileVersion>2026.1.0.5</FileVersion>
+    <AssemblyVersion>2026.1.0.9</AssemblyVersion>
+    <FileVersion>2026.1.0.9</FileVersion>
   </PropertyGroup>
 
 </Project>

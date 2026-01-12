@@ -36,7 +36,7 @@
             Grid.Row="1"
             Width="50"
             Height="50"
-            Margin="15,-20"
+            Margin="15,-18"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Fill="{Binding ElementName=ThisCurrentWeatherCard, Path=WindColor}"
