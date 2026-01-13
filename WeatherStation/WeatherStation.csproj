@@ -12,8 +12,8 @@
     <Copyright>LC2L Informatique</Copyright>
     <Company>LC2L Informatique</Company>
     <Authors>LC2L Informatique</Authors>
-    <AssemblyVersion>2026.1.0.19</AssemblyVersion>
-    <FileVersion>2026.1.0.19</FileVersion>
+    <AssemblyVersion>2026.1.0.21</AssemblyVersion>
+    <FileVersion>2026.1.0.21</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

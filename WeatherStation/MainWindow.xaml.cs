@@ -245,7 +245,7 @@ namespace WeatherStation
             var infoClimatManager = new InfoClimatManager(city);
             await infoClimatManager.LoadInfoClimatDataAsync(clientApi, _apiError);
             CurrentWeatherCard.ForecastDate = DateOnly.FromDateTime(DateTime.Now);
-            CurrentWeatherCard.ForcastTime = TimeOnly.FromDateTime(DateTime.Now);
+            CurrentWeatherCard.ForcastTime = TimeOnly.FromDateTime(DateTimeHelper.Max(DateTime.Now, CurrentWeatherCard.ForecastDate.ToDateTime(new TimeOnly(14, 0, 0))));
             CurrentWeatherCard.UpdateCard(infoClimatManager);
             var dayForecasts = infoClimatManager.GetForecastsForDay(DateOnly.FromDateTime(DateTime.Now));
             for (var i = 1; i <= 4; i++)
